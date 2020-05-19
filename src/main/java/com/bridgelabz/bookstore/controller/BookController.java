@@ -3,6 +3,8 @@ package com.bridgelabz.bookstore.controller;
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +35,9 @@ public class BookController {
     @GetMapping("/sort-books-by-price-ascending")
     public ResponseEntity<List<Book>> sortBooksByPriceAsc() {
         return new ResponseEntity<>(bookService.sortBooksByPriceAsc(), HttpStatus.OK);
+    }
+    @GetMapping("/page")
+    public Page<Book> fetchBooks(Pageable pageable) {
+        return  this.bookService.fetchBooks(pageable);
     }
 }
