@@ -10,7 +10,8 @@ public interface IBookService {
     void saveBookData();
     List<Book> getAllBooks();
     List<Book> searchBooks(String searchKey);
-    List<Book> sortBooksByPriceAsc();
+    Page<Book> sortBooksByPriceAsc(Pageable pageable);
 
     Page<Book> fetchBooks(Pageable pageable);
+
 }

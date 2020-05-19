@@ -58,12 +58,14 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<Book> sortBooksByPriceAsc() {
-        return bookRepository.findAllByOrderByPriceAsc();
+    public Page<Book> sortBooksByPriceAsc(Pageable pageable) {
+        return bookRepository.findAllByOrderByPriceAsc(pageable);
     }
 
     @Override
     public Page<Book> fetchBooks(Pageable pageable) {
         return bookRepository.findAllBy(pageable);
     }
+
+
 }

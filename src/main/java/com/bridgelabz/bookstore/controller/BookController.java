@@ -33,11 +33,12 @@ public class BookController {
     }
 
     @GetMapping("/sort-books-by-price-ascending")
-    public ResponseEntity<List<Book>> sortBooksByPriceAsc() {
-        return new ResponseEntity<>(bookService.sortBooksByPriceAsc(), HttpStatus.OK);
+    public Page<Book> sortBooksByPriceAsc(Pageable pageable) {
+        return this.bookService.sortBooksByPriceAsc(pageable);
     }
-    @GetMapping("/page")
+    @GetMapping("/pagination-by-id")
     public Page<Book> fetchBooks(Pageable pageable) {
         return  this.bookService.fetchBooks(pageable);
     }
+
 }
