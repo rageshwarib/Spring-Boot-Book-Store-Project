@@ -11,10 +11,10 @@ public class Book {
     private String author;
     private String title;
     private String image;
+
     @Column(length = 2000)
     private String description;
     private int price;
-
     public String getImage() {
         return image;
     }
