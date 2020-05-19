@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
- import java.util.List;
+import java.util.List;
 
 @RestController
 @RequestMapping("/book-store")
@@ -23,8 +23,8 @@ public class BookController {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<List<Book>> allBooks() {
-        return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
+    public ResponseEntity<Page<Book>> allBooks(Pageable pageable) {
+        return new ResponseEntity<>(bookService.getAllBooks(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/search-books")
@@ -34,11 +34,6 @@ public class BookController {
 
     @GetMapping("/sort-books-by-price-ascending")
     public Page<Book> sortBooksByPriceAsc(Pageable pageable) {
-        return this.bookService.sortBooksByPriceAsc(pageable);
+        return bookService.sortBooksByPriceAsc(pageable);
     }
-    @GetMapping("/pagination-by-id")
-    public Page<Book> fetchBooks(Pageable pageable) {
-        return  this.bookService.fetchBooks(pageable);
-    }
-
 }
