@@ -20,12 +20,18 @@ public class BookController {
         return "Data saved";
     }
 
-    @GetMapping("/all-books")
+    @GetMapping("/home")
     public ResponseEntity<List<Book>> allBooks() {
         return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
     }
 
+    @GetMapping("/search-books")
     public ResponseEntity<List<Book>> searchBooks(@RequestBody String searchKey) {
         return new ResponseEntity<>(bookService.searchBooks(searchKey), HttpStatus.OK);
+    }
+
+    @GetMapping("/sort-books-by-price-ascending")
+    public ResponseEntity<List<Book>> sortBooksByPriceAsc() {
+        return new ResponseEntity<>(bookService.sortBooksByPriceAsc(), HttpStatus.OK);
     }
 }

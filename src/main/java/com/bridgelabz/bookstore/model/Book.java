@@ -15,6 +15,7 @@ public class Book {
     @Column(length = 2000)
     private String description;
     private int price;
+
     public String getImage() {
         return image;
     }
