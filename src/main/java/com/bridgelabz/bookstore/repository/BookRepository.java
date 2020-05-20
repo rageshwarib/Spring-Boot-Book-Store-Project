@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>, PagingAndSortingRepository<Book, Long> {
     Page<Book> findAllByOrderByPriceAsc(Pageable pageable);
-    List<Book> findAllByOrderByPriceDesc();
+    Page<Book> findAllByOrderByPriceDesc(Pageable pageable);
     Page<Book> findAllBy(Pageable pageable);
 }

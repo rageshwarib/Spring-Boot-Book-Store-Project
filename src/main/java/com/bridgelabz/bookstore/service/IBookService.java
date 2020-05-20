@@ -8,6 +8,7 @@ import java.util.List;
 public interface IBookService {
     void saveBookData();
     Page<Book> getAllBooks(Pageable pageable);
-    List<Book> searchBooks(String searchKey);
+    Page<Book> searchBooks(Pageable pageable, String searchKey);
     Page<Book> sortBooksByPriceAsc(Pageable pageable);
+    Page<Book> sortBooksByPriceDesc(Pageable pageable);
 }

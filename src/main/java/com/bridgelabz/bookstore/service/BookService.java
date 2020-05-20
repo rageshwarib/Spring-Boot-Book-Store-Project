@@ -3,8 +3,7 @@ package com.bridgelabz.bookstore.service;
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -47,18 +46,23 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<Book> searchBooks(String searchKey) {
+    public Page<Book> searchBooks(Pageable pageable, String searchKey) {
        List<Book> bookList = new ArrayList<>();
        for (Book book : bookRepository.findAll()) {
            if (book.getAuthor().equalsIgnoreCase(searchKey) || book.getTitle().equalsIgnoreCase(searchKey)) {
                bookList.add(book);
            }
        }
-       return bookList;
+       return new PageImpl<>(bookList, pageable, bookList.size());
     }
 
     @Override
     public Page<Book> sortBooksByPriceAsc(Pageable pageable) {
         return bookRepository.findAllByOrderByPriceAsc(pageable);
+    }
+
+    @Override
+    public Page<Book> sortBooksByPriceDesc(Pageable pageable) {
+        return bookRepository.findAllByOrderByPriceDesc(pageable);
     }
 }

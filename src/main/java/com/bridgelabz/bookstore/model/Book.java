@@ -15,6 +15,15 @@ public class Book {
     @Column(length = 2000)
     private String description;
     private int price;
+    private String publicationDate;
+
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(String publicationDate) {
+        this.publicationDate = publicationDate;
+    }
 
     public String getImage() {
         return image;

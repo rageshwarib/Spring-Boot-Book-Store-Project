@@ -27,13 +27,18 @@ public class BookController {
         return new ResponseEntity<>(bookService.getAllBooks(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/search-books")
-    public ResponseEntity<List<Book>> searchBooks(@RequestBody String searchKey) {
-        return new ResponseEntity<>(bookService.searchBooks(searchKey), HttpStatus.OK);
+    @PostMapping("/search-books")
+    public ResponseEntity<Page<Book>> searchBooks(Pageable pageable, @RequestBody String searchKey) {
+        return new ResponseEntity<>(bookService.searchBooks(pageable, searchKey), HttpStatus.OK);
     }
 
     @GetMapping("/sort-books-by-price-ascending")
     public Page<Book> sortBooksByPriceAsc(Pageable pageable) {
         return bookService.sortBooksByPriceAsc(pageable);
+    }
+
+    @GetMapping("/sort-books-by-price-descending")
+    public ResponseEntity<Page<Book>> sortBooksByPriceDesc(Pageable pageable) {
+        return new ResponseEntity<>(bookService.sortBooksByPriceDesc(pageable), HttpStatus.OK);
     }
 }
