@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -33,6 +34,7 @@ public class BookService implements IBookService {
                 book.setPrice(Integer.parseInt(data[4]));
                 IntStream.range(6, data.length - 1).forEach(column -> data[5] += "," + data[column]);
                 book.setDescription(data[5]);
+                book.setPublicationDate(new Date());
                 bookRepository.save(book);
             }
         } catch (IOException e) {
