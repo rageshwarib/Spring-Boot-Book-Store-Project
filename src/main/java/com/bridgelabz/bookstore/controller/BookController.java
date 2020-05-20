@@ -41,4 +41,9 @@ public class BookController {
     public ResponseEntity<Page<Book>> sortBooksByPriceDesc(Pageable pageable) {
         return new ResponseEntity<>(bookService.sortBooksByPriceDesc(pageable), HttpStatus.OK);
     }
+
+    @GetMapping("/sort-books-by-newest-arrival")
+    public ResponseEntity<Page<Book>> sortBooksByNewestArrivals(Pageable pageable) {
+        return new ResponseEntity<>(bookService.sortBooksByNewestArrivals(pageable), HttpStatus.OK);
+    }
 }

@@ -11,4 +11,5 @@ public interface IBookService {
     Page<Book> searchBooks(Pageable pageable, String searchKey);
     Page<Book> sortBooksByPriceAsc(Pageable pageable);
     Page<Book> sortBooksByPriceDesc(Pageable pageable);
+    Page<Book> sortBooksByNewestArrivals(Pageable pageable);
 }
