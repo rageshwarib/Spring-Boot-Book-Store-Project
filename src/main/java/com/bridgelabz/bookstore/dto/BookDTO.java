@@ -3,20 +3,12 @@ package com.bridgelabz.bookstore.dto;
 import java.time.LocalDateTime;
 
 public class BookDTO {
-    private String author;
     private String title;
+    private String author;
     private String image;
     private String description;
     private int price;
     private LocalDateTime publicationDate;
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public String getTitle() {
         return title;
@@ -24,6 +16,14 @@ public class BookDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getImage() {

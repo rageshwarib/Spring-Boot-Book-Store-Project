@@ -1,6 +1,6 @@
 package com.bridgelabz.bookstore.controller;
 
-import com.bridgelabz.bookstore.model.Book;
+import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,28 +23,28 @@ public class BookController {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<Page<Book>> allBooks(@PageableDefault(size=10) Pageable pageable) {
+    public ResponseEntity<Page<BookDTO>> allBooks(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.getAllBooks(pageable), HttpStatus.OK);
     }
 
     @PostMapping("/search-books")
-    public ResponseEntity<Page<Book>> searchBooks(@PageableDefault(size=10) Pageable pageable
+    public ResponseEntity<Page<BookDTO>> searchBooks(@PageableDefault(size=10) Pageable pageable
             , @RequestBody String searchKey) {
         return new ResponseEntity<>(bookService.searchBooks(pageable, searchKey), HttpStatus.OK);
     }
 
     @GetMapping("/sort-books-by-price-ascending")
-    public Page<Book> sortBooksByPriceAsc(@PageableDefault(size=10) Pageable pageable) {
+    public Page<BookDTO> sortBooksByPriceAsc(@PageableDefault(size=10) Pageable pageable) {
         return bookService.sortBooksByPriceAsc(pageable);
     }
 
     @GetMapping("/sort/price-descending")
-    public ResponseEntity<Page<Book>> sortBooksByPriceDesc(@PageableDefault(size=10) Pageable pageable) {
+    public ResponseEntity<Page<BookDTO>> sortBooksByPriceDesc(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.sortBooksByPriceDesc(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/sort-books-by-newest-arrival")
-    public ResponseEntity<Page<Book>> sortBooksByNewestArrivals(@PageableDefault(size=10) Pageable pageable) {
+    public ResponseEntity<Page<BookDTO>> sortBooksByNewestArrivals(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.sortBooksByNewestArrivals(pageable), HttpStatus.OK);
     }
 }
