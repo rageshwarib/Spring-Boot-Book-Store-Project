@@ -5,10 +5,10 @@ import com.bridgelabz.bookstore.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/book-store")
@@ -23,27 +23,28 @@ public class BookController {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<Page<Book>> allBooks(Pageable pageable) {
+    public ResponseEntity<Page<Book>> allBooks(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.getAllBooks(pageable), HttpStatus.OK);
     }
 
     @PostMapping("/search-books")
-    public ResponseEntity<Page<Book>> searchBooks(Pageable pageable, @RequestBody String searchKey) {
+    public ResponseEntity<Page<Book>> searchBooks(@PageableDefault(size=10) Pageable pageable
+            , @RequestBody String searchKey) {
         return new ResponseEntity<>(bookService.searchBooks(pageable, searchKey), HttpStatus.OK);
     }
 
     @GetMapping("/sort-books-by-price-ascending")
-    public Page<Book> sortBooksByPriceAsc(Pageable pageable) {
+    public Page<Book> sortBooksByPriceAsc(@PageableDefault(size=10) Pageable pageable) {
         return bookService.sortBooksByPriceAsc(pageable);
     }
 
     @GetMapping("/sort/price-descending")
-    public ResponseEntity<Page<Book>> sortBooksByPriceDesc(Pageable pageable) {
+    public ResponseEntity<Page<Book>> sortBooksByPriceDesc(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.sortBooksByPriceDesc(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/sort-books-by-newest-arrival")
-    public ResponseEntity<Page<Book>> sortBooksByNewestArrivals(Pageable pageable) {
+    public ResponseEntity<Page<Book>> sortBooksByNewestArrivals(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.sortBooksByNewestArrivals(pageable), HttpStatus.OK);
     }
 }
