@@ -10,17 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/book-store")
-public class BookController {
+public class CustomerBookController {
     @Autowired
     IBookService bookService;
-
-    @GetMapping("")
-    public String saveDataInDb() {
-        bookService.saveBookData();
-        return "Data saved";
-    }
 
     @GetMapping("/home")
     public ResponseEntity<Page<BookDTO>> allBooks(@PageableDefault(size=10) Pageable pageable) {
@@ -33,7 +28,7 @@ public class BookController {
         return new ResponseEntity<>(bookService.searchBooks(pageable, searchKey), HttpStatus.OK);
     }
 
-    @GetMapping("/sort-books-by-price-ascending")
+    @GetMapping("/sort/price-ascending")
     public Page<BookDTO> sortBooksByPriceAsc(@PageableDefault(size=10) Pageable pageable) {
         return bookService.sortBooksByPriceAsc(pageable);
     }
@@ -43,7 +38,7 @@ public class BookController {
         return new ResponseEntity<>(bookService.sortBooksByPriceDesc(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/sort-books-by-newest-arrival")
+    @GetMapping("/sort/newest-arrival")
     public ResponseEntity<Page<BookDTO>> sortBooksByNewestArrivals(@PageableDefault(size=10) Pageable pageable) {
         return new ResponseEntity<>(bookService.sortBooksByNewestArrivals(pageable), HttpStatus.OK);
     }

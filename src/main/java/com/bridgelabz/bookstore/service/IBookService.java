@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
-    void saveBookData();
     Page<BookDTO> getAllBooks(Pageable pageable);
     Page<BookDTO> searchBooks(Pageable pageable, String searchKey);
     Page<BookDTO> sortBooksByPriceAsc(Pageable pageable);
