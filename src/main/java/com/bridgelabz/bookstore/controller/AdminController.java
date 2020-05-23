@@ -2,6 +2,7 @@ package com.bridgelabz.bookstore.controller;
 
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.service.IAdminBookService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
