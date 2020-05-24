@@ -17,10 +17,4 @@ public class DTOEntityMapper {
             return bookDTO;
         });
     }
-
-    public Book mapBookDTOToEntity(BookDTO bookDTO) {
-        Book book = new Book();
-        modelMapper.map(bookDTO, book);
-        return book;
-    }
 }
