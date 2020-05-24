@@ -6,4 +6,5 @@ import java.io.BufferedReader;
 public interface IAdminBookService {
     String saveBookData(BufferedReader bufferedReader);
     String addBook(Book book);
+    String deleteBook(long id);
 }

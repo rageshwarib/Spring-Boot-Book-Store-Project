@@ -34,7 +34,12 @@ public class AdminController extends CustomerBookController {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             return new ResponseEntity<>(adminBookService.saveBookData(bufferedReader), HttpStatus.OK);
         } catch (IOException e) {
-            return new ResponseEntity<>("Book upload faild", HttpStatus.OK);
+            return new ResponseEntity<>("Books adding failed", HttpStatus.OK);
         }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteBook(@PathVariable long id) {
+        return new ResponseEntity<>(adminBookService.deleteBook(id), HttpStatus.OK);
     }
 }

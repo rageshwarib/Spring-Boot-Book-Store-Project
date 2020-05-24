@@ -45,4 +45,10 @@ public class AdminBookService extends BookService implements IAdminBookService{
         bookRepository.save(book);
         return "Book added successfully";
     }
+
+    @Override
+    public String deleteBook(long id) {
+        bookRepository.deleteById(id);
+        return "Book deleted successfully";
+    }
 }
