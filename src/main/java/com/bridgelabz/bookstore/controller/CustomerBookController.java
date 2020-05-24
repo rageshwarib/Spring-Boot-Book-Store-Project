@@ -2,7 +2,6 @@ package com.bridgelabz.bookstore.controller;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.service.IBookService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
