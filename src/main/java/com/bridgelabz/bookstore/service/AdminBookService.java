@@ -1,21 +1,25 @@
 package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.model.Book;
-import com.bridgelabz.bookstore.modelmapper.DTOEntityMapper;
 import com.bridgelabz.bookstore.repository.BookRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.beans.PropertyDescriptor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 @Service
 public class AdminBookService extends BookService implements IAdminBookService{
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private DTOEntityMapper dtoEntityMapper;
 
     @Override
     public String saveBookData(BufferedReader bufferedReader) {
@@ -41,9 +45,32 @@ public class AdminBookService extends BookService implements IAdminBookService{
         return "Books added successfully";
     }
 
+    @Override
     public String addBook(Book book) {
         bookRepository.save(book);
         return "Book added successfully";
+    }
+
+    @Override
+    public String updateBook(Book book) {
+        Optional<Book> book1 = bookRepository.findById(book.getId());
+        if (book1.isPresent()) {
+            final BeanWrapper src = new BeanWrapperImpl(book);
+            PropertyDescriptor[] pds = src.getPropertyDescriptors();
+            Set<String> emptyNames = new HashSet<>();
+            for (PropertyDescriptor pd : pds) {
+                Object srcValue = src.getPropertyValue(pd.getName());
+                if (srcValue == null) {
+                    emptyNames.add(pd.getName());
+                }
+            }
+            String [] result = new String[emptyNames.size()];
+            String [] nullProperties = emptyNames.toArray(result);
+            BeanUtils.copyProperties(src, book1.get(), nullProperties);
+            bookRepository.save(book1.get());
+            return "Book details updated successfully";
+        }
+        return "Book not found";
     }
 
     @Override

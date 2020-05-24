@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
 
 @RestController
@@ -36,6 +35,11 @@ public class AdminController extends CustomerBookController {
         } catch (IOException e) {
             return new ResponseEntity<>("Books adding failed", HttpStatus.OK);
         }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateBook(@RequestBody Book book) {
+        return new ResponseEntity<>(adminBookService.updateBook(book), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")

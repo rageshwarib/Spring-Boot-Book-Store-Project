@@ -29,8 +29,8 @@ public class BookService implements IBookService {
     public Page<BookDTO> searchBooks(Pageable pageable, String searchKey) {
        List<Book> bookList = new ArrayList<>();
        for (Book book : bookRepository.findAll()) {
-           if (book.getAuthor().toLowerCase().contains(searchKey)
-                   || book.getTitle().toLowerCase().contains(searchKey)) {
+           if (book.getAuthor().toLowerCase().contains(searchKey.toLowerCase())
+                   || book.getTitle().toLowerCase().contains(searchKey.toLowerCase())) {
                bookList.add(book);
            }
        }
