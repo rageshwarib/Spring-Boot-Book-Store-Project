@@ -18,7 +18,7 @@ public class AdminBookService extends BookService implements IAdminBookService{
     private DTOEntityMapper dtoEntityMapper;
 
     @Override
-    public void saveBookData(BufferedReader bufferedReader) {
+    public String saveBookData(BufferedReader bufferedReader) {
         try {
             bufferedReader.readLine();
             String line;
@@ -38,9 +38,11 @@ public class AdminBookService extends BookService implements IAdminBookService{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "Books added successfully";
     }
 
-    public void addBook(Book book) {
+    public String addBook(Book book) {
         bookRepository.save(book);
+        return "Book added successfully";
     }
 }

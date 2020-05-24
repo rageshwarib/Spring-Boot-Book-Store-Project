@@ -3,6 +3,8 @@ package com.bridgelabz.bookstore.controller;
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.service.IAdminBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,27 +17,24 @@ public class AdminController extends CustomerBookController {
     IAdminBookService adminBookService;
 
     @GetMapping("")
-    public String saveDataInDb() throws FileNotFoundException {
+    public ResponseEntity<String> saveDataInDb() throws FileNotFoundException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/books_data.csv"));
-        adminBookService.saveBookData(bufferedReader);
-        return "Data saved successfully";
+        return new ResponseEntity<>(adminBookService.saveBookData(bufferedReader), HttpStatus.OK);
     }
 
     @PostMapping("/add-book")
-    public String addBook(@RequestBody Book book) {
-        adminBookService.addBook(book);
-        return "Book added successfully";
+    public ResponseEntity<String> addBook(@RequestBody Book book) {
+        return new ResponseEntity<>(adminBookService.addBook(book), HttpStatus.OK);
     }
 
     @PostMapping("/upload")
-    public String fileUpload(@RequestParam("file") MultipartFile multipartFile) {
+    public ResponseEntity<String> fileUpload(@RequestParam("file") MultipartFile multipartFile) {
         try {
             InputStream inputStream = multipartFile.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            adminBookService.saveBookData(bufferedReader);
+            return new ResponseEntity<>(adminBookService.saveBookData(bufferedReader), HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>("Book upload faild", HttpStatus.OK);
         }
-        return "File data saved sucessfully";
     }
 }

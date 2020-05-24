@@ -4,6 +4,6 @@ import com.bridgelabz.bookstore.model.Book;
 import java.io.BufferedReader;
 
 public interface IAdminBookService {
-    void saveBookData(BufferedReader bufferedReader);
-    void addBook(Book book);
+    String saveBookData(BufferedReader bufferedReader);
+    String addBook(Book book);
 }
