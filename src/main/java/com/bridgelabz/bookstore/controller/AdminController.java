@@ -5,17 +5,19 @@ import com.bridgelabz.bookstore.service.IAdminBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @RestController
 @RequestMapping("/book-store/admin")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController extends CustomerBookController {
     @Autowired
     IAdminBookService adminBookService;
 
-    @GetMapping("")
+    @GetMapping("/save-books")
     public ResponseEntity<String> saveDataInDb() throws FileNotFoundException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/books_data.csv"));
         return new ResponseEntity<>(adminBookService.saveBookData(bufferedReader), HttpStatus.OK);
@@ -42,7 +44,7 @@ public class AdminController extends CustomerBookController {
         return new ResponseEntity<>(adminBookService.updateBook(book), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable long id) {
         return new ResponseEntity<>(adminBookService.deleteBook(id), HttpStatus.OK);
     }
