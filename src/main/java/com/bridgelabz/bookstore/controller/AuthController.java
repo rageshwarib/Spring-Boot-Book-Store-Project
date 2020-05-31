@@ -10,9 +10,14 @@ import com.bridgelabz.bookstore.payload.request.*;
 import com.bridgelabz.bookstore.payload.response.*;
 import com.bridgelabz.bookstore.repository.*;
 import com.bridgelabz.bookstore.security.jwt.JwtUtils;
+import com.bridgelabz.bookstore.service.EmailNotificationService;
 import com.bridgelabz.bookstore.service.UserDetailsImpl;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,6 +43,10 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    EmailNotificationService emailNotificationService;
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -104,6 +113,9 @@ public class AuthController {
         }
         user.setRoles(roles);
         userRepository.save(user);
+        emailNotificationService.sendEmailNotification(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
 }
+

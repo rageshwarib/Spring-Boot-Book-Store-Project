@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.model.Book;
+import com.bridgelabz.bookstore.model.User;
 import com.bridgelabz.bookstore.repository.BookRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -17,7 +18,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 @Service
-public class AdminBookService extends BookService implements IAdminBookService{
+public class AdminBookServiceImpl implements IAdminBookService{
     @Autowired
     private BookRepository bookRepository;
 
@@ -78,4 +79,5 @@ public class AdminBookService extends BookService implements IAdminBookService{
         bookRepository.deleteById(id);
         return "Book deleted successfully";
     }
+
 }
