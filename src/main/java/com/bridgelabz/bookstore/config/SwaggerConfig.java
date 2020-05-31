@@ -1,4 +1,4 @@
-package com.bridgelabz.bookstore.swaggerconfig;
+package com.bridgelabz.bookstore.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 "API for online book store",
                 "1.0",
                 "Free to use",
-                new Contact("Balaji Ijjapwar", "http://bridgelabz.com", "bijjapwar123@gmail.com"),
+                new Contact("Rageshwari", "http://bridgelabz.com", "ragu.bodke@gmail.com"),
                 "API License",
                 "http://bridgelabz.com",
                 Collections.emptyList()

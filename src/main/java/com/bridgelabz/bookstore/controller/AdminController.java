@@ -5,24 +5,30 @@ import com.bridgelabz.bookstore.service.IAdminBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @RestController
 @RequestMapping("/book-store/admin")
+
+@PreAuthorize("hasRole('USER')")
 public class AdminController extends CustomerBookController {
     @Autowired
     IAdminBookService adminBookService;
 
-    @GetMapping("")
+    @GetMapping("/savedata")
     public ResponseEntity<String> saveDataInDb() throws FileNotFoundException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/books_data.csv"));
         return new ResponseEntity<>(adminBookService.saveBookData(bufferedReader), HttpStatus.OK);
     }
 
     @PostMapping("/add-book")
-    public ResponseEntity<String> addBook(@RequestBody Book book) {
+    public ResponseEntity<String> addBook(@RequestHeader String token, @RequestBody Book book) {
+        System.out.println(token);
+
         return new ResponseEntity<>(adminBookService.addBook(book), HttpStatus.OK);
     }
 
