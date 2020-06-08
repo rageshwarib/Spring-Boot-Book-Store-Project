@@ -24,10 +24,15 @@ public class BookServiceImpl implements IBookService {
     @Autowired
     private UserRepository userRepository;
 
+//    @Override
+//    public Page<BookDTO> getAllBooks(Pageable pageable) {
+//        Page<Book> bookEntity = bookRepository.findAllBy(pageable);
+//        return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
+//    }
+
     @Override
-    public Page<BookDTO> getAllBooks(Pageable pageable) {
-        Page<Book> bookEntity = bookRepository.findAllBy(pageable);
-        return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 
     @Override

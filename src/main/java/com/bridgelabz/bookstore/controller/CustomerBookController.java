@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 @RequestMapping("/book-store")
 public class CustomerBookController {
     @Autowired
     IBookService bookService;
 
     @GetMapping("/home")
-    public ResponseEntity<Page<BookDTO>> allBooks(@PageableDefault(size=10) Pageable pageable) {
-        return new ResponseEntity<>(bookService.getAllBooks(pageable), HttpStatus.OK);
+    public ResponseEntity allBooks() {
+        return new ResponseEntity(bookService.getAllBooks(), HttpStatus.OK);
     }
 
     @PostMapping("/search-books")
