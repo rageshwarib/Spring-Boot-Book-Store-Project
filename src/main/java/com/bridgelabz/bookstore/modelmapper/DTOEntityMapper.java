@@ -1,7 +1,9 @@
 package com.bridgelabz.bookstore.modelmapper;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
+import com.bridgelabz.bookstore.dto.CartDto;
 import com.bridgelabz.bookstore.model.Book;
+import com.bridgelabz.bookstore.model.Cart;
 import com.fasterxml.jackson.core.JsonParser;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -19,4 +21,5 @@ public class DTOEntityMapper {
             return bookDTO;
         });
     }
+    
 }

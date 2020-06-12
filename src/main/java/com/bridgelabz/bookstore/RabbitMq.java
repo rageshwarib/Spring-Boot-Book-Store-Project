@@ -1,5 +1,7 @@
 package com.bridgelabz.bookstore;
 
+
+
 import com.bridgelabz.bookstore.config.RabbitMqConfig;
 import com.bridgelabz.bookstore.dto.RabbitMqDto;
 import org.springframework.amqp.core.AmqpTemplate;
