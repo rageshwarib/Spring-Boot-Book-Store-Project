@@ -7,6 +7,7 @@ import com.bridgelabz.bookstore.modelmapper.DTOEntityMapper;
 import com.bridgelabz.bookstore.repository.BookRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
+    @Cacheable(value= "searchBooks", key= "#book")
     public Page<BookDTO> searchBooks(Pageable pageable, String searchKey) {
        List<Book> bookList = new ArrayList<>();
        for (Book book : bookRepository.findAll()) {

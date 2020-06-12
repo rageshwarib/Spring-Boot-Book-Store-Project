@@ -3,10 +3,12 @@ package com.bridgelabz.bookstore.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-public class Book {
+public class Book implements Serializable{
     @Id
     private long id;
     private String title;
