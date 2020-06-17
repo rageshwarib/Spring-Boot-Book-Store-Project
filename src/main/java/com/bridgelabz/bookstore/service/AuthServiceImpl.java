@@ -8,10 +8,12 @@ import com.bridgelabz.bookstore.model.User;
 import com.bridgelabz.bookstore.payload.request.LoginRequest;
 import com.bridgelabz.bookstore.payload.request.SignupRequest;
 import com.bridgelabz.bookstore.payload.response.JwtResponse;
+import com.bridgelabz.bookstore.payload.response.MessageResponse;
 import com.bridgelabz.bookstore.repository.RoleRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,8 +45,21 @@ public class AuthServiceImpl implements IAuthService {
     @Autowired
     private RabbitMqDto rabbitMqDto;
 
+
     @Override
-    public String registerUser( SignupRequest signUpRequest) {
+    public ResponseEntity registerUser(SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
@@ -52,11 +67,12 @@ public class AuthServiceImpl implements IAuthService {
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
+//            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//                    .orElseThrow(() ->
+            throw new RuntimeException("Error: Role is not found.");
+//            );
+//            roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
@@ -64,8 +80,8 @@ public class AuthServiceImpl implements IAuthService {
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
-                        break;
 
+                        break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -76,11 +92,11 @@ public class AuthServiceImpl implements IAuthService {
         user.setRoles(roles);
         userRepository.save(user);
         sendEmailNotification(user);
-        return "User registered successfully!";
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     @Override
-    public JwtResponse authenticateUser(LoginRequest loginRequest) {
+    public ResponseEntity authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -91,12 +107,11 @@ public class AuthServiceImpl implements IAuthService {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
-        return new JwtResponse(jwt,
+        return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles);
+                roles));
     }
 
     @Override

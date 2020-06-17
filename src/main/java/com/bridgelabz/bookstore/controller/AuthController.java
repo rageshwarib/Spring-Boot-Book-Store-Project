@@ -7,6 +7,7 @@ import com.bridgelabz.bookstore.payload.response.*;
 import com.bridgelabz.bookstore.repository.*;
 
 
+import com.bridgelabz.bookstore.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +25,12 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-       return iAuthenticateUserService.logInUser(loginRequest);
+        return iAuthService.authenticateUser(loginRequest);
     }
 
     @PostMapping("/signup")
     public ResponseEntity registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
-        return iAuthenticateUserService.registerUser(signUpRequest);
+        return iAuthService.registerUser(signUpRequest);
     }
 
     @GetMapping("/verify/{userId}")
@@ -40,4 +39,4 @@ public class AuthController {
     }
 
 }
-//@PropertySource("classpath:message.properties")
+
