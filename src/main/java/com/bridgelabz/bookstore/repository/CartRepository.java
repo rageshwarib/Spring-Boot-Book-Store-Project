@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.bridgelabz.bookstore.dto.CartDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,8 @@ public interface CartRepository extends JpaRepository<Cart, Integer>{
     @Transactional
     @Query("DELETE FROM Cart cart WHERE cart.bookId = :bookId AND cart.userId = :userId")
     void deleteCartsByBookIdAndUserId(@Param("bookId") int bookId, @Param("userId") int userId);
+
+    CartDto findByBookIdAndUserId(int bookId, int userId);
     
 }
 

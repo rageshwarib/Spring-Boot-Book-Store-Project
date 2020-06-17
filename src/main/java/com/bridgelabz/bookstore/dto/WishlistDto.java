@@ -3,7 +3,9 @@ package com.bridgelabz.bookstore.dto;
 public class WishlistDto {
 	 private int userId;
 	 private int bookId;
-	 
+	 public WishlistDto() {
+		// TODO Auto-generated constructor stub
+	}
 	 public WishlistDto(int userId, int bookId) {
 	        this.userId = userId;
 	        this.bookId = bookId;

@@ -23,7 +23,7 @@ public class CartServiceImpl implements ICartService{
 
     @Autowired
     private CartRepository cartRepository;
-    
+
     @Autowired
     private BookRepository bookRepository;
 
@@ -44,15 +44,24 @@ public class CartServiceImpl implements ICartService{
         return "Book Removed from cart Successfully";
     }
 
-    @Override
-    public List<Book> getAllCartBooks(int userId) {
-        List<Book> cartBooks = new ArrayList<>();
-        List<Cart> allByUserId = cartRepository.findAllByUserId(userId);
-        for(Cart cart : allByUserId) {
-            if(cart.getBookQuantity() == 0)
-                cartRepository.deleteCartsByBookIdAndUserId(cart.getBookId(), cart.getUserId());
-            cartBooks.add(bookRepository.findById(cart.getBookId()));
-        }
-        return cartBooks;
-    }
+//    @Override
+//    public List<BookCartDto> getAllCartBooks(int userId) {
+//        List<BookCartDto> bookCartDto = new ArrayList<>();
+//        try {
+//            List<Cart> allByUserId = cartRepository.findAllByUserId(userId);
+//            for (Cart cart : allByUserId) {
+//                if (cart.getBookQuantity() == 0)
+//                    cartRepository.deleteCartsByBookIdAndUserId(cart.getBookId(), cart.getUserId());
+//                bookCartDto.add(new BookCartDto((int) bookRepository.findById(cart.getBookId()).getId(),
+//                        bookRepository.findById(cart.getBookId()).getAuthor(),
+//                        bookRepository.findById(cart.getBookId()).getTitle(),
+//                        bookRepository.findById(cart.getBookId()).getImage(),
+//                        bookRepository.findById(cart.getBookId()).getPrice(),
+//                        cartRepository.findByBookIdAndUserId(cart.getBookId(), cart.getUserId()).getBookQuantity()));
+//            }
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//        return bookCartDto;
+//    }
 }

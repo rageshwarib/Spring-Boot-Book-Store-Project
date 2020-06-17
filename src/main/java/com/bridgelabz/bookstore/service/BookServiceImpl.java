@@ -67,11 +67,5 @@ public class BookServiceImpl implements IBookService {
         Page<Book> bookEntity = bookRepository.findAllByOrderByPublicationDateDesc(pageable);
         return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
     }
-    @Override
-    public String verifyUserAccount(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        user.get().setVerified(true);
-        userRepository.save(user.get());
-        return "Congratulations!! Your account is verified.";
-    }
+
 }
