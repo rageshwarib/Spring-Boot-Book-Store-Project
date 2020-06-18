@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.bookstore.dto.BookCartDto;
 import com.bridgelabz.bookstore.dto.CartDto;
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.model.Cart;
@@ -32,7 +33,7 @@ public class CartServiceImpl implements ICartService{
     public String addToCart(CartDto cartDto) {
         Cart cart = converterService.convertToCartEntity(cartDto);
         if (cartRepository.existsCartByUserId(cart.getUserId()) && cartRepository.existsCartByBookId(cart.getBookId()))
-            cartRepository.deleteCartsByBookIdAndUserId(cart.getBookId(), cart.getUserId());
+            cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), cart.getUserId());
         cartRepository.save(cart);
         return "Added to cart successfully";
     }
@@ -40,28 +41,32 @@ public class CartServiceImpl implements ICartService{
     @Override
     public String removeFromCart(CartDto cartDto) {
         Cart cart = converterService.convertToCartEntity(cartDto);
-        cartRepository.deleteCartsByBookIdAndUserId(cart.getBookId(), cart.getUserId());
+        cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), cart.getUserId());
         return "Book Removed from cart Successfully";
     }
 
-//    @Override
-//    public List<BookCartDto> getAllCartBooks(int userId) {
-//        List<BookCartDto> bookCartDto = new ArrayList<>();
-//        try {
-//            List<Cart> allByUserId = cartRepository.findAllByUserId(userId);
-//            for (Cart cart : allByUserId) {
-//                if (cart.getBookQuantity() == 0)
-//                    cartRepository.deleteCartsByBookIdAndUserId(cart.getBookId(), cart.getUserId());
-//                bookCartDto.add(new BookCartDto((int) bookRepository.findById(cart.getBookId()).getId(),
-//                        bookRepository.findById(cart.getBookId()).getAuthor(),
-//                        bookRepository.findById(cart.getBookId()).getTitle(),
-//                        bookRepository.findById(cart.getBookId()).getImage(),
-//                        bookRepository.findById(cart.getBookId()).getPrice(),
-//                        cartRepository.findByBookIdAndUserId(cart.getBookId(), cart.getUserId()).getBookQuantity()));
-//            }
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//        return bookCartDto;
-//    }
+    @Override
+    public List<BookCartDto> getBooks(int userId) {
+        List<BookCartDto> bookCartDto = new ArrayList<>();
+        try {
+            List<Cart> allByUserId = cartRepository.findAllByUserId(userId);
+            for (Cart cart : allByUserId) {
+                if (cart.getBookQuantity() > 0) {
+                	Book book = bookRepository.findById(cart.getBookId());
+                	System.out.println(book);
+ 
+                 //   cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), cart.getUserId());
+                bookCartDto.add(new BookCartDto(cart.getBookId(),
+                        book.getAuthor(),
+                        book.getTitle(),
+                        book.getImage(),
+                        book.getPrice(),
+                        cart.getBookQuantity()));
+            }
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return bookCartDto;
+    }
 }

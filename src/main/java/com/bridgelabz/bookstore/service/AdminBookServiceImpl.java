@@ -54,7 +54,7 @@ public class AdminBookServiceImpl implements IAdminBookService{
 
     @Override
     public String updateBook(Book book) {
-        Optional<Book> book1 = bookRepository.findById(book.getId());
+        Optional<Book> book1 = Optional.ofNullable(bookRepository.findById(book.getId()));
         if (book1.isPresent()) {
             final BeanWrapper src = new BeanWrapperImpl(book);
             PropertyDescriptor[] pds = src.getPropertyDescriptors();

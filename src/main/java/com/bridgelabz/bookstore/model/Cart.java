@@ -1,23 +1,29 @@
 package com.bridgelabz.bookstore.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Cart {
+public class Cart{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 	
     private int userId;
-    private int bookId;
+    private long bookId;
     private int bookQuantity;
     
-    public Cart() {
+   public Cart() {
     }
-
+//    public Cart(int userId, long bookId, int bookQuantity) {
+//        this.userId = userId;
+//        this.bookId = bookId;
+//        this.bookQuantity = bookQuantity;
+//    }
     public int getUserId() {
         return userId;
     }
@@ -26,10 +32,10 @@ public class Cart {
         this.userId = userId;
     }
 
-	public int getBookId() {
+	public long getBookId() {
 		return bookId;
 	}
-	public void setBookId(int bookId) {
+	public void setBookId(long bookId) {
 		this.bookId = bookId;
 	}
 	public int getBookQuantity() {

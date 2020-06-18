@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.bridgelabz.bookstore.dto.BookCartDto;
 import com.bridgelabz.bookstore.dto.CartDto;
 import com.bridgelabz.bookstore.service.ICartService;
 
 import java.util.List;
-@CrossOrigin("*")
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/home/cart")
 public class CartController {
@@ -27,11 +29,11 @@ public class CartController {
     public ResponseEntity<String> removeFromCart(@RequestBody CartDto cartDto) {
         return new ResponseEntity<String>(iCartService.removeFromCart(cartDto), HttpStatus.OK);
     }
-//    @GetMapping("/getall/{userId}")
-//    public List<BookCartDto> getall(@PathVariable int userId) {
-//        System.out.println("getting books from cart");
-//        return iCartService.getAllCartBooks(userId);
-//    }
+    @GetMapping("/getall/{userId}")
+    public List<BookCartDto> getall(@PathVariable int userId) {
+        System.out.println("getting books from cart");
+        return iCartService.getBooks(userId);
+    }
 
 
 

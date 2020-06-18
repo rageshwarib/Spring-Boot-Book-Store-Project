@@ -1,14 +1,16 @@
 package com.bridgelabz.bookstore.dto;
 
-public class BookCartDto {
-    private int id;
+import java.io.Serializable;
+
+public class BookCartDto implements Serializable{
+    private long id;
     private String author;
     private String title;
     private String image;
     private double price;
     private int bookQuantity;
 
-    public BookCartDto(int id, String author, String title, String image, int price, int bookQuantity) {
+    public BookCartDto(long id, String author, String title, String image, int price, int bookQuantity) {
         this.id = id;
         this.author = author;
         this.title = title;
@@ -17,11 +19,11 @@ public class BookCartDto {
         this.bookQuantity = bookQuantity;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
