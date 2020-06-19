@@ -19,11 +19,7 @@ public class Cart{
     
    public Cart() {
     }
-//    public Cart(int userId, long bookId, int bookQuantity) {
-//        this.userId = userId;
-//        this.bookId = bookId;
-//        this.bookQuantity = bookQuantity;
-//    }
+
     public int getUserId() {
         return userId;
     }
