@@ -30,9 +30,9 @@ public class CartController {
         return new ResponseEntity<String>(iCartService.removeFromCart(cartDto), HttpStatus.OK);
     }
     @GetMapping("/getall/{userId}")
-    public List<BookCartDto> getall(@PathVariable int userId) {
+    public List<BookCartDto> getall(@RequestHeader String token) {
         System.out.println("getting books from cart");
-        return iCartService.getBooks(userId);
+        return iCartService.getBooks(token);
     }
 
 

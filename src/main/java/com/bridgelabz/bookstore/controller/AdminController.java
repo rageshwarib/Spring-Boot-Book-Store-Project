@@ -45,7 +45,7 @@ public class AdminController extends CustomerBookController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable long id) {
+    public ResponseEntity<String> deleteBook(@PathVariable long id, @RequestHeader String token ) {
         return new ResponseEntity<>(adminBookService.deleteBook(id), HttpStatus.OK);
     }
 }

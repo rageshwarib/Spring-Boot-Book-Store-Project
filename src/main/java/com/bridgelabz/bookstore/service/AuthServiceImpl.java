@@ -1,7 +1,9 @@
 package com.bridgelabz.bookstore.service;
 
-import com.bridgelabz.bookstore.RabbitMq;
-import com.bridgelabz.bookstore.dto.RabbitMqDto;
+
+import com.bridgelabz.bookstore.config.PasswordConfig;
+import com.bridgelabz.bookstore.dto.EmailDto;
+import com.bridgelabz.bookstore.dto.SetPasswordDto;
 import com.bridgelabz.bookstore.model.ERole;
 import com.bridgelabz.bookstore.model.Role;
 import com.bridgelabz.bookstore.model.User;
@@ -9,12 +11,17 @@ import com.bridgelabz.bookstore.payload.request.LoginRequest;
 import com.bridgelabz.bookstore.payload.request.SignupRequest;
 import com.bridgelabz.bookstore.payload.response.JwtResponse;
 import com.bridgelabz.bookstore.payload.response.MessageResponse;
+import com.bridgelabz.bookstore.payload.response.Response;
 import com.bridgelabz.bookstore.repository.RoleRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.security.jwt.JwtUtils;
+import com.bridgelabz.bookstore.utility.RabbitMq;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,9 +48,15 @@ public class AuthServiceImpl implements IAuthService {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    RabbitMq rabbitMq;
+    RabbitMq rabbitmq;
     @Autowired
-    private RabbitMqDto rabbitMqDto;
+    private EmailDto rabbitMqDto;
+    @Autowired
+    RabbitTemplate template;
+    @Autowired
+    JavaMailSender javaMailSender;
+    @Autowired
+    PasswordConfig passwordConfig;
 
 
     @Override
@@ -91,7 +104,13 @@ public class AuthServiceImpl implements IAuthService {
         }
         user.setRoles(roles);
         userRepository.save(user);
-        sendEmailNotification(user);
+        
+        rabbitMqDto.setTo(user.getEmail());
+        rabbitMqDto.setFrom("ragu.bodke@gmail.com");
+        rabbitMqDto.setSubject("Welcome to Book Store");
+        rabbitMqDto.setBody("Click this link to verify your account " +user.getId());
+        rabbitmq.sendingMsgToQueue(rabbitMqDto);
+     //   sendEmailNotification(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
@@ -122,11 +141,75 @@ public class AuthServiceImpl implements IAuthService {
         return "Congratulations!! Your account is verified.";
     }
 
-    public void sendEmailNotification(User user) throws MailException {
-        rabbitMqDto.setTo(user.getEmail());
-        rabbitMqDto.setFrom("ragu.bodke@gmail.com");
-        rabbitMqDto.setSubject("Welcome to Book Store");
-        rabbitMqDto.setBody("Click this link to verify your account " +user.getId());
-        rabbitMq.sendingMsgToQueue(rabbitMqDto);
+   // public void sendEmailNotification(User user) throws MailException {
+        
+   // }
+    @Override
+    public Response findEmail(String email) {
+
+    	User user = userRepository.findByEmail(email);   // find by user email id
+    	if (user == null) {								// if user email id it null response to user not register it
+    		throw new  RuntimeException("User not existing");
+    	}else {
+
+    		String token = jwtUtils.createTokenFromUserId(user.getId());
+    		EmailDto emailDto = RabbitMq.getRabbitMq(email, token);
+    		template.convertAndSend("userMessageQueue", rabbitMqDto);
+    		javaMailSender.send(rabbitmq.verifyUserMail(email, token, "Your Id is " + user.getId())); // send email
+    		return new Response(400, "user  email found",token);
+    		}	
+    	}
+
+
+    @Override
+    public Response setPassword(SetPasswordDto setpassworddto, String token) {
+
+    	System.out.println("1");
+    	System.out.println(token);
+    	long userId = jwtUtils.getUserIdFromToken(token);
+    	System.out.println("2"+userId);
+    	String email = userRepository.findById(userId).get().getEmail(); // find user email present or not
+    	User updatedUser = userRepository.findByEmail(email);
+    	System.out.println("4");
+    	System.out.println(updatedUser);
+
+    	if(setpassworddto.getPassword().equals(setpassworddto.getConfirmPassword())) {
+
+    		System.out.println(setpassworddto);
+    		updatedUser.setPassword(passwordConfig.encoder().encode(setpassworddto.getPassword()));
+    		updateuserByEmail(updatedUser, email);
+    		return new Response(200, "Password changed Successfully", true);
+    	} else {
+    		System.out.println("3");
+    		return new Response(200,"Password is not matching", true);
+    	}
+
     }
+
+
+    public String updateuserByEmail(User user, String email) {
+    	User updatedUser = userRepository.findByEmail(email);
+    	updatedUser = user;
+    	userRepository.save(updatedUser);
+    	return "User updated sucessfully";
+    }
+    @Override
+    public Response validateUser(String token) {
+
+    	long userid = jwtUtils.getUserIdFromToken(token); // get user id from user token.
+    	if (userid == 0) {
+    		throw new RuntimeException("Invalid Token");
+    	}
+    	User user = userRepository.findById(userid).get(); // check userid present or not
+    	if (user != null) { // if userid is found validate should be true
+    		user.setVerified(true);
+    		userRepository.save(user);
+    		return new Response(200, "Email Verified", true);
+    	} else {
+    		return new Response(200, "Email not verified", false);
+
+    	}
+
+    }
+
 }
