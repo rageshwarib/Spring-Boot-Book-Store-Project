@@ -126,6 +126,7 @@ public class AuthServiceImpl implements IAuthService {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+        System.out.println(jwt);
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
@@ -156,7 +157,7 @@ public class AuthServiceImpl implements IAuthService {
     		EmailDto emailDto = RabbitMq.getRabbitMq(email, token);
     		template.convertAndSend("userMessageQueue", rabbitMqDto);
     		javaMailSender.send(rabbitmq.verifyUserMail(email, token, "Your Id is " + user.getId())); // send email
-    		return new Response(400, "user  email found",token);
+    		return new Response(200, "user  email found",token);
     		}	
     	}
 
@@ -164,13 +165,11 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public Response setPassword(SetPasswordDto setpassworddto, String token) {
 
-    	System.out.println("1");
     	System.out.println(token);
-    	long userId = jwtUtils.getUserIdFromToken(token);
+    	long userId = jwtUtils.getUserIdFromJwtToken(token);
     	System.out.println("2"+userId);
     	String email = userRepository.findById(userId).get().getEmail(); // find user email present or not
     	User updatedUser = userRepository.findByEmail(email);
-    	System.out.println("4");
     	System.out.println(updatedUser);
 
     	if(setpassworddto.getPassword().equals(setpassworddto.getConfirmPassword())) {
@@ -180,8 +179,7 @@ public class AuthServiceImpl implements IAuthService {
     		updateuserByEmail(updatedUser, email);
     		return new Response(200, "Password changed Successfully", true);
     	} else {
-    		System.out.println("3");
-    		return new Response(200,"Password is not matching", true);
+    		return new Response(400,"Password is not matching", true);
     	}
 
     }
@@ -196,7 +194,7 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public Response validateUser(String token) {
 
-    	long userid = jwtUtils.getUserIdFromToken(token); // get user id from user token.
+    	long userid = jwtUtils.getUserIdFromJwtToken(token); // get user id from user token.
     	if (userid == 0) {
     		throw new RuntimeException("Invalid Token");
     	}
@@ -206,7 +204,7 @@ public class AuthServiceImpl implements IAuthService {
     		userRepository.save(user);
     		return new Response(200, "Email Verified", true);
     	} else {
-    		return new Response(200, "Email not verified", false);
+    		return new Response(400, "Email not verified", false);
 
     	}
 

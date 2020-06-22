@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bridgelabz.bookstore.dto.BookCartDto;
 import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.dto.CartDto;
 import com.bridgelabz.bookstore.dto.WishlistDto;
@@ -30,6 +31,11 @@ public class ConverterService {
     public Cart convertToCartEntity(CartDto cartDto) {
         return modelMapper.map(cartDto, Cart.class);
     }
+    public BookCartDto convertToBookCartDto(Cart cart) {
+        return modelMapper.map(cart, BookCartDto.class);
+    }
+    
+    
 
     public WishlistDto converToWishlistDto(Wishlist wishlist) {
         return modelMapper.map(wishlist, WishlistDto.class);

@@ -25,27 +25,39 @@ public class JwtUtils {
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-//        Map<String, Object> claimMap = new HashMap<String, Object>();
-//        claimMap.put("userId", userPrincipal.getId());
-//        claimMap.put("userName", userPrincipal.getUsername());
-//        return Jwts.builder().addClaims(claimMap)
-//              //  .setSubject((userPrincipal.getId()))
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .compact();
-        	return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
+        Map<String, Object> claimMap = new HashMap<String, Object>();
+        claimMap.put("userId", userPrincipal.getId());
+        claimMap.put("userName", userPrincipal.getUsername());
+        return Jwts.builder().addClaims(claimMap)
+              //  .setSubject((userPrincipal.getId()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+//        	return Jwts.builder()
+//                .setSubject((userPrincipal.getUsername()))
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+//                .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-       return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    	System.out.println(jwtSecret);
+       Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+      return claims.get("userName", String.class);
 
     }
+    public long getUserIdFromJwtToken(String token) {
+		Claims claim = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+		long userId = claim.get("userId", Long.class);
+		return userId;
+		}
+//    public Long getUserIdFromJwtToken(String token) {
+//        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+//       return claims.get("userId", Long.class);
+//
+//     }
 
     public boolean validateJwtToken(String authToken) {
         try {
@@ -71,10 +83,5 @@ public class JwtUtils {
 		return token;
 		}
 	
-	public long getUserIdFromToken(String token) {
-		Claims claim = Jwts.parser().setSigningKey("userId").parseClaimsJws(token).getBody();
-		String userIdString = claim.getSubject();
-		long userId = Long.parseLong(userIdString);
-		return userId;
-		}
+	
 }

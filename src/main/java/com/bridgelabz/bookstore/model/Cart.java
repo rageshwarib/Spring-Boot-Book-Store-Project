@@ -13,18 +13,18 @@ public class Cart{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 	
-    private int userId;
+    private long userId;
     private long bookId;
     private int bookQuantity;
     
    public Cart() {
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

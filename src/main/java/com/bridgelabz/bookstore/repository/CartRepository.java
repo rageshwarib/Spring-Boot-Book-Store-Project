@@ -15,19 +15,19 @@ import com.bridgelabz.bookstore.model.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer>{
-	boolean existsCartByUserId(int userId);
+	boolean existsCartByUserId(Long userId);
     boolean existsCartByBookId(long bookId);
-    List<Cart> findAllByUserId(int userId);
+    List<Cart> findAllByUserId(long userId);
     
     @Modifying
     @Query("DELETE FROM Cart cart WHERE cart.bookId = :bookId AND cart.userId = :userId")
-    void deleteCartByBookIdAndUserId(@Param("bookId") long bookId, @Param("userId") int userId);
+    void deleteCartByBookIdAndUserId(@Param("bookId") long bookId, @Param("userId") long userId);
 
-    Cart findByUserId(int userId);
+   List<Cart> findByUserId(long userId);
 
     CartDto findByBookId(int userId);
 
-    CartDto findByBookIdAndUserId(long bookId, int userId);
+    CartDto findByBookIdAndUserId(long bookId, long userId);
     
 }
 
