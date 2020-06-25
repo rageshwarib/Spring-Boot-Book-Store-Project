@@ -1,8 +1,6 @@
 package com.bridgelabz.bookstore.dto;
 
-import java.io.Serializable;
-
-public class CartDto implements Serializable{
+public class CartDto {
 	//private int userId;
     private long bookId;
     private int bookQuantity;

@@ -34,8 +34,9 @@ public class AdminBookServiceImpl implements IAdminBookService{
                 book.setAuthor(data[1]);
                 book.setTitle(data[2]);
                 book.setImage(data[3]);
+                book.setQuantity(Integer.parseInt(data[4]));
                 book.setPrice(Integer.parseInt(data[4]));
-                IntStream.range(6, data.length - 1).forEach(column -> data[5] += "," + data[column]);
+                IntStream.range(7, data.length - 1).forEach(column -> data[6] += "," + data[column]);
                 book.setDescription(data[5]);
                 book.setPublicationDate(LocalDateTime.now());
                 bookRepository.save(book);

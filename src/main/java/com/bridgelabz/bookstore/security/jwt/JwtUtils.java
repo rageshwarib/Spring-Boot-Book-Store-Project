@@ -29,18 +29,22 @@ public class JwtUtils {
         claimMap.put("userId", userPrincipal.getId());
         claimMap.put("userName", userPrincipal.getUsername());
         return Jwts.builder().addClaims(claimMap)
-              //  .setSubject((userPrincipal.getId()))
+              // .setSubject((userPrincipal.getId()))
+               .setIssuedAt(new Date())
+               .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();  
+    }
+    
+    public String getjwtTokenFromUsername(String username) {
+        return Jwts.builder()
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
-//        	return Jwts.builder()
-//                .setSubject((userPrincipal.getUsername()))
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .compact();
     }
+    
 
     public String getUserNameFromJwtToken(String token) {
     	System.out.println(jwtSecret);
@@ -51,13 +55,11 @@ public class JwtUtils {
     public long getUserIdFromJwtToken(String token) {
 		Claims claim = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		long userId = claim.get("userId", Long.class);
+		System.out.println("UserId" + userId);
 		return userId;
 		}
-//    public Long getUserIdFromJwtToken(String token) {
-//        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-//       return claims.get("userId", Long.class);
-//
-//     }
+   
+
 
     public boolean validateJwtToken(String authToken) {
         try {
@@ -76,12 +78,16 @@ public class JwtUtils {
         }
         return false;
     }
-    public String createTokenFromUserId(Long userId) {
+    public String getJwtTokenFromUserId(Long userId) {
 		String token = Jwts.builder().setSubject(String.valueOf(userId)).signWith(SignatureAlgorithm.HS256, "userId")
 		.compact();
 		System.out.println(token);
 		return token;
 		}
-	
-	
+    public long getUserIdFromToken(String token) {
+    	Claims claim = Jwts.parser().setSigningKey("userId").parseClaimsJws(token).getBody();
+    	String userIdString = claim.getSubject();
+    	long userId = Long.parseLong(userIdString);
+    	return userId;
+    	}
 }

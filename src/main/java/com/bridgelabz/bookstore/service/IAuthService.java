@@ -12,8 +12,8 @@ public interface IAuthService {
     ResponseEntity registerUser(SignupRequest signUpRequest);
     ResponseEntity authenticateUser(LoginRequest loginRequest);
     String verifyUserAccount(Long userId);
-    Response findEmail(String email);
-	Response setPassword(SetPasswordDto setpassworddto, String token);
-	Response validateUser(String token);
+    String forgotPassword(String email);
+    String setPassword(SetPasswordDto setpassworddto, String token);
+	// String validateUser(String token);
 }
 

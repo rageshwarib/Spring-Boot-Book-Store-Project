@@ -151,68 +151,56 @@ public class AuthServiceImpl implements IAuthService {
         
    // }
     @Override
-    public Response findEmail(String email) {
+    public String forgotPassword(String email) {
 
     	User user = userRepository.findByEmail(email);   // find by user email id
     	if (user == null) {								// if user email id it null response to user not register it
     		throw new  RuntimeException("User not existing");
     	}else {
 
-    		String token = jwtUtils.createTokenFromUserId(user.getId());
+    		String token = jwtUtils.getJwtTokenFromUserId(user.getId());
     		EmailDto emailDto = RabbitMq.getRabbitMq(email, token);
     		template.convertAndSend("userMessageQueue", rabbitMqDto);
     		javaMailSender.send(rabbitmq.verifyUserMail(email, token, "Your Id is " + user.getId())); // send email
-    		return new Response(200, "user  email found",token);
+    		return "User Email found" + token ;
     		}	
     	}
 
 
     @Override
-    public Response setPassword(SetPasswordDto setpassworddto, String token) {
-
-    	System.out.println(token);
-    	long userId = jwtUtils.getUserIdFromJwtToken(token);
-    	System.out.println("2"+userId);
-    	String email = userRepository.findById(userId).get().getEmail(); // find user email present or not
-    	User updatedUser = userRepository.findByEmail(email);
-    	System.out.println(updatedUser);
-
-    	if(setpassworddto.getPassword().equals(setpassworddto.getConfirmPassword())) {
-
-    		System.out.println(setpassworddto);
-    		updatedUser.setPassword(passwordConfig.encoder().encode(setpassworddto.getPassword()));
-    		updateuserByEmail(updatedUser, email);
-    		return new Response(200, "Password changed Successfully", true);
-    	} else {
-    		return new Response(400,"Password is not matching", true);
-    	}
-
+    public String setPassword(SetPasswordDto setpassworddto, String token) {
+    	long userId = jwtUtils.getUserIdFromToken(token);
+    	Optional<User> user = userRepository.findById(userId); // find user email present or not
+    	user.get().setPassword(encoder.encode(setpassworddto.getConfirmPassword()));
+    	userRepository.save(user.get());
+    	return "Password changed";
     }
 
 
-    public String updateuserByEmail(User user, String email) {
-    	User updatedUser = userRepository.findByEmail(email);
-    	updatedUser = user;
-    	userRepository.save(updatedUser);
-    	return "User updated sucessfully";
-    }
-    @Override
-    public Response validateUser(String token) {
-
-    	long userid = jwtUtils.getUserIdFromJwtToken(token); // get user id from user token.
-    	if (userid == 0) {
-    		throw new RuntimeException("Invalid Token");
-    	}
-    	User user = userRepository.findById(userid).get(); // check userid present or not
-    	if (user != null) { // if userid is found validate should be true
-    		user.setVerified(true);
-    		userRepository.save(user);
-    		return new Response(200, "Email Verified", true);
-    	} else {
-    		return new Response(400, "Email not verified", false);
-
-    	}
-
-    }
+//    public String updateuserByEmail(User user, String email) {
+//    	User updatedUser = userRepository.findByEmail(email);
+//    	updatedUser = user;
+//    	userRepository.save(updatedUser);
+//    	return "User updated sucessfully";
+//    }
+//    @Override
+//    public Response validateUser(String token) {
+//
+//    	String userName = jwtUtils.getUserNameFromJwtToken(token); // get username from user token.
+//    	if (userName == null) {
+//    		throw new RuntimeException("Invalid Token");
+//    	}
+//    	User user = userRepository.findByUsername(userName).get(); // check username present or not
+//    	if (user != null) { // if userid is found validate should be true
+//    		user.setVerified(true);
+//    		userRepository.save(user);
+//    		return new Response(200, "Email Verified", true);
+//    	} else {
+//    		return new Response(400, "Email not verified", false);
+//
+//    	}
+//
+//    }
+    
 
 }

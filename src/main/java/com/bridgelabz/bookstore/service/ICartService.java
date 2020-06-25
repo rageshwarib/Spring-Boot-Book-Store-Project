@@ -10,4 +10,5 @@ public interface ICartService {
 	 String addToCart(CartDto cartDto, String token);
 	 String removeFromCart(CartDto cartDto, String token);
 	 List<BookCartDto> getBooks(String token);
+	 Long getOrderId(String token);
 }

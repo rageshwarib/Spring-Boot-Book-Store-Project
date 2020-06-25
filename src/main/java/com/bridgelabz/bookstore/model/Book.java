@@ -18,6 +18,7 @@ public class Book implements Serializable{
     private String description;
     private int price;
     private LocalDateTime publicationDate;
+    private int quantity;
 
     public long getId() {
         return id;
@@ -74,4 +75,13 @@ public class Book implements Serializable{
     public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+    
 }

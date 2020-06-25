@@ -38,13 +38,13 @@ public class AuthController {
     public ResponseEntity<String> verifyAccount(@PathVariable long userId) {
         return new ResponseEntity(iAuthService.verifyUserAccount(userId), HttpStatus.OK);
     }
-    @PostMapping("/forgot-password")
-    public ResponseEntity findEmail(@RequestHeader String email){
-    	return new ResponseEntity(iAuthService.findEmail(email), HttpStatus.OK);
+    @GetMapping("/forgot-password/{email}")
+    public ResponseEntity forgotPassword(@PathVariable String email){
+    	return new ResponseEntity(iAuthService.forgotPassword(email), HttpStatus.OK);
     }
 
-    @PostMapping("/set-new-password")
-    public ResponseEntity setNewPassword(@RequestHeader String token, @RequestBody SetPasswordDto setpassworddto){
+    @PostMapping("/reset-password")
+    public ResponseEntity resetPassword(@RequestBody SetPasswordDto setpassworddto, @RequestHeader String token){
     	return new ResponseEntity(iAuthService.setPassword(setpassworddto, token), HttpStatus.OK);
     }
 

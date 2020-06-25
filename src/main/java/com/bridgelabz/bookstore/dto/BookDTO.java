@@ -9,6 +9,7 @@ public class BookDTO {
     private String description;
     private int price;
     private LocalDateTime publicationDate;
+    private int quantity;
 
     public String getTitle() {
         return title;
@@ -57,4 +58,13 @@ public class BookDTO {
     public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+    
 }

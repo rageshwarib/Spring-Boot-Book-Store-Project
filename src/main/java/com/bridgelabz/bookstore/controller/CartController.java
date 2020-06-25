@@ -20,21 +20,24 @@ public class CartController {
     @Autowired
     private ICartService iCartService;
 
-    @PutMapping("/add-to-cart")
+    @PostMapping("/add-to-cart")
     public ResponseEntity<String> addToCart(@RequestBody CartDto cartDto, @RequestHeader String token) {
         return new ResponseEntity<String>(iCartService.addToCart(cartDto,token), HttpStatus.OK);
     }
 
-    @PutMapping("/remove-from-cart")
+    @PostMapping("/remove-from-cart")
     public ResponseEntity<String> removeFromCart(@RequestBody CartDto cartDto, @RequestHeader String token) {
         return new ResponseEntity<String>(iCartService.removeFromCart(cartDto, token), HttpStatus.OK);
     }
-    @GetMapping("/getall/{userId}")
+    @GetMapping("/getall")
     public List<BookCartDto> getall(@RequestHeader String token) {
         System.out.println("getting books from cart");
         return iCartService.getBooks(token);
     }
-
+    @GetMapping("/order-placed/orderid")
+    public ResponseEntity getOrderId(@RequestHeader String token) {
+        return new ResponseEntity(iCartService.getOrderId(token), HttpStatus.OK);
+    }
 
 
 }
