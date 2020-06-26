@@ -16,12 +16,12 @@ import com.bridgelabz.bookstore.model.Wishlist;
 public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
 	boolean existsWishlistByUserId(int userId);
     boolean existsWishlistByBookId(int bookId);
-    List<Wishlist> findAllByUserId(int userId);
+    List<Wishlist> findAllByUserId(long userId);
 
 
     @Modifying
     @Transactional
     @Query("DELETE FROM Wishlist wishlist WHERE wishlist.bookId = :bookId AND wishlist.userId = :userId")
-    void deleteWishlistByBookIdAndUserId(@Param("bookId") int bookId, @Param("userId") int userId);
+    void deleteWishlistByBookIdAndUserId(@Param("bookId") long bookId, @Param("userId") long userId);
 
 }

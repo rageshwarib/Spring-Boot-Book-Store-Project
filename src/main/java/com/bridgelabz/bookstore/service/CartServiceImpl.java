@@ -27,7 +27,7 @@ import com.bridgelabz.bookstore.utility.RabbitMq;
 @Service
 @Transactional
 public class CartServiceImpl implements ICartService{
-	 private static final long order_Id = 1000;
+	private static final long order_Id = 1000;
 	@Autowired
     private ConverterService converterService;
 	@Autowired
@@ -48,28 +48,28 @@ public class CartServiceImpl implements ICartService{
 
     @Override
     public String addToCart(CartDto cartDto, String token) {
-    if (jwtUtils.validateJwtToken(token)) {
-        Cart cart = converterService.convertToCartEntity(cartDto);
-        Long userId = jwtUtils.getUserIdFromJwtToken(token);
-        cart.setUserId(userId);
-        userRepository.findById(userId);
-        cartRepository.save(cart);
-        return "Added to cart successfully";
-    } else
-        throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
-}
+    	if (jwtUtils.validateJwtToken(token)) {
+    		Cart cart = converterService.convertToCartEntity(cartDto);
+    		Long userId = jwtUtils.getUserIdFromJwtToken(token);
+    		cart.setUserId(userId);
+    		userRepository.findById(userId);
+    		cartRepository.save(cart);
+    		return "Added to cart successfully";
+    	} else
+    		throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
+    }
 
     @Override
     public String removeFromCart(CartDto cartDto, String token) {
     	 if (jwtUtils.validateJwtToken(token)) {
-        Cart cart = converterService.convertToCartEntity(cartDto);
-        long userId = jwtUtils.getUserIdFromJwtToken(token);
-        cart.setUserId(userId);
-        cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), userId);
-        return "Book Removed from cart Successfully";
+    		 Cart cart = converterService.convertToCartEntity(cartDto);
+    		 long userId = jwtUtils.getUserIdFromJwtToken(token);
+    		 cart.setUserId(userId);
+    		 cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), userId);
+    		 return "Book Removed from cart Successfully";
     	 } else
-    	        throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
-    	}
+    		 throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
+    }
 
     @Override
     public List<BookCartDto> getBooks(String token) {
@@ -100,49 +100,47 @@ public class CartServiceImpl implements ICartService{
     public Long getOrderId(String token) {
      if (jwtUtils.validateJwtToken(token)) {
     	Long userId = jwtUtils.getUserIdFromJwtToken(token);
-//          //  List<BookCartDto> cartBooks = getBooks(token);
-//          //  for (BookCartDto bookCartQty : cartBooks) {
-//                long id = bookCartQty.getId();
-//                int userBookQuantity = bookCartQty.getBookQuantity();
-//                int storeQuantity = bookRepository.findById(id).getQuantity();
-//                if (userBookQuantity <= storeQuantity) {
-//                    bookRepository.findById(id).setQuantity(storeQuantity - userBookQuantity);
-//                } else {
-//                	throw new UserException(UserException.ExceptionType.QUANTITY_EXCEEDED, "Book quantity in incremented");
-//                }
-//            }
-//                for (BookCartDto books : cartBooks) {
-//                    cartRepository.deleteCartByBookIdAndUserId(books.getId(), userId);
-//                
-//            }
-           Optional<User> byId = userRepository.findById(userId);
-          String email = byId.get().getEmail();
-            OrderId orderIdNew = new OrderId();
-            OrderId orderId = orderIdRepository.findFirstByOrderByIdDesc();
-           if (orderId == null) {
-              orderIdNew.setUserId(userId);
-                orderIdNew.setOrderId(order_Id);
-                orderIdRepository.save(orderIdNew);
-              sendEmailWithOrderDetails(email, order_Id);
-               return orderIdNew.getOrderId();
-            }
-          orderIdNew.setUserId(userId);
-           orderIdNew.setOrderId(order_Id + orderId.getId());
-           orderIdRepository.save(orderIdNew);
-           sendEmailWithOrderDetails(email, order_Id + orderId.getId());
-           return orderIdNew.getOrderId();
-   }else 
-       throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
-}
-
+		// List<BookCartDto> cartBooks = getBooks(token);
+		// for (BookCartDto bookCartQty : cartBooks) {
+		// long id = bookCartQty.getId();
+		// int userBookQuantity = bookCartQty.getBookQuantity();
+		// int storeQuantity = bookRepository.findById(id).getQuantity();
+		// if (userBookQuantity <= storeQuantity) {
+		// bookRepository.findById(id).setQuantity(storeQuantity - userBookQuantity);
+		// }
+		// else {
+		// throw new UserException(UserException.ExceptionType.QUANTITY_EXCEEDED, "Book quantity in incremented");
+		// }
+		// }
+		// for (BookCartDto books : cartBooks) {
+		// cartRepository.deleteCartByBookIdAndUserId(books.getId(), userId);               
+		// }
+		Optional<User> byId = userRepository.findById(userId);
+		String email = byId.get().getEmail();
+		OrderId orderIdNew = new OrderId();
+		OrderId orderId = orderIdRepository.findFirstByOrderByIdDesc();
+		if (orderId == null) {
+			orderIdNew.setUserId(userId);
+			orderIdNew.setOrderId(order_Id);
+			orderIdRepository.save(orderIdNew);
+			sendEmailWithOrderDetails(email, order_Id);
+			return orderIdNew.getOrderId();
+		}
+		orderIdNew.setUserId(userId);
+		orderIdNew.setOrderId(order_Id + orderId.getId());
+		orderIdRepository.save(orderIdNew);
+		sendEmailWithOrderDetails(email, order_Id + orderId.getId());
+		return orderIdNew.getOrderId();
+     	}
+     else 
+    	 throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
+    }
     
-   
     private void sendEmailWithOrderDetails(String email, long orderId) {
         emailDto.setTo(email);
         emailDto.setFrom("ragu.bodke@gmail.com");
         emailDto.setSubject("Your Order is Placed");
         emailDto.setBody("Thank you for placing order with us, your order id is " + orderId);
         rabbitMq.sendingMsgToQueue(emailDto);
-    }
-    
+    }    
 }
