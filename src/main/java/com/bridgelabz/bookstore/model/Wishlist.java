@@ -11,7 +11,11 @@ public class Wishlist {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private long userId;
+<<<<<<< HEAD
     private long bookId;
+=======
+    private int bookId;
+>>>>>>> 8bffe02e19b00124c650bcdd0c93dd50963771f2
     
     public Wishlist() {
     }

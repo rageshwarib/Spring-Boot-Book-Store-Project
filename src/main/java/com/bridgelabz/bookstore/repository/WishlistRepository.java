@@ -14,8 +14,13 @@ import com.bridgelabz.bookstore.model.Wishlist;
 
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
+<<<<<<< HEAD
 	// boolean existsWishlistByUserId(Long userId);
     boolean existsWishlistByBookId(long bookId);
+=======
+	boolean existsWishlistByUserId(int userId);
+    boolean existsWishlistByBookId(int bookId);
+>>>>>>> 8bffe02e19b00124c650bcdd0c93dd50963771f2
     List<Wishlist> findAllByUserId(long userId);
 
 
