@@ -7,7 +7,7 @@ import com.bridgelabz.bookstore.model.Book;
 
 public interface IWishlistService {
 
-    String addToWishlist(WishlistDto wishlistDto);
-    String removeFromWishlist(WishlistDto wishlistDto);
-    List<Book> getAllBooksList(int userId);
+    String addToWishlist(WishlistDto wishlistDto, String token);
+    String removeFromWishlist(WishlistDto wishlistDto, String token);
+    List<Book> getAllBooksList(String token);
 }

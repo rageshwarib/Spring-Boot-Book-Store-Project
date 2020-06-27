@@ -40,15 +40,5 @@ public class CustomerDetailsImpl implements ICustomerDetailsService {
 	            return customerDetailsRepository.existsByUsername(username);
 	    	}else
 	    		return false;
-	        
 	    }
-//	    @Override
-//	    public Boolean isCustomerDetailsExisted(String token) throws BookStoreException {
-//	        if (jwtUtils.validateJwtToken(token)) {
-//	            String username = jwtUtils.getUserNameFromJwtToken(token);
-//	            return customerDetailsRepository.existsByUsername(username);
-//	        } else
-//	            throw new BookStoreException(BookStoreException.ExceptionType.JWT_NOT_VALID, environment.getProperty("JWT_NOT_VALID"));
-//	    }
-
 }

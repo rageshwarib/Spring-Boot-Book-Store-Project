@@ -8,9 +8,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IBookService {
-    List<Book> getAllBooks();
-    Page<BookDTO> searchBooks(Pageable pageable, String searchKey);
-    Page<BookDTO> sortBooksByPriceAsc(Pageable pageable);
-    Page<BookDTO> sortBooksByPriceDesc(Pageable pageable);
-    Page<BookDTO> sortBooksByNewestArrivals(Pageable pageable);
+   // List<Book> getAllBooks();
+    Page<Book> getAllBooks(Pageable pageable);
+    List<Book> searchBooks(String searchKey);
+    //Page<BookDTO> searchBooks(String searchKey, Pageable pageable);
+    
+    Page<Book> sortBooksByPriceAsc(Pageable pageable);
+    Page<Book> sortBooksByPriceDesc(Pageable pageable);
+    Page<Book> sortBooksByNewestArrivals(Pageable pageable);
 }

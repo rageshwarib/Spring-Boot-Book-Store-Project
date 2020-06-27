@@ -25,20 +25,19 @@ public class BookServiceImpl implements IBookService {
     @Autowired
     private UserRepository userRepository;
 
+    @Override
+    public Page<Book> getAllBooks(Pageable pageable) {
+        return bookRepository.findAllBy(pageable);
+    }
+
 //    @Override
-//    public Page<BookDTO> getAllBooks(Pageable pageable) {
-//        Page<Book> bookEntity = bookRepository.findAllBy(pageable);
-//        return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
+//    public List<Book> getAllBooks() {
+//        return bookRepository.findAll();
 //    }
 
     @Override
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
-    }
-
-    @Override
-    @Cacheable(value= "searchBooks", key= "#book")
-    public Page<BookDTO> searchBooks(Pageable pageable, String searchKey) {
+   // @Cacheable(value= "searchBooks", key= "#book")
+    public List<Book> searchBooks(String searchKey) {
        List<Book> bookList = new ArrayList<>();
        for (Book book : bookRepository.findAll()) {
            if (book.getAuthor().toLowerCase().contains(searchKey.toLowerCase())
@@ -46,26 +45,22 @@ public class BookServiceImpl implements IBookService {
                bookList.add(book);
            }
        }
-       Page<Book> bookEntity = new PageImpl<>(bookList, pageable, bookList.size());
-       return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
+       return bookList;
     }
 
     @Override
-    public Page<BookDTO> sortBooksByPriceAsc(Pageable pageable) {
-        Page<Book> bookEntity = bookRepository.findAllByOrderByPriceAsc(pageable);
-        return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
+    public  Page<Book> sortBooksByPriceAsc(Pageable pageable) {
+     return bookRepository.findAllByOrderByPriceAsc(pageable);
     }
 
     @Override
-    public Page<BookDTO> sortBooksByPriceDesc(Pageable pageable) {
-        Page<Book> bookEntity = bookRepository.findAllByOrderByPriceDesc(pageable);
-        return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
-    }
+    public Page<Book> sortBooksByPriceDesc(Pageable pageable) {
+        return bookRepository.findAllByOrderByPriceDesc(pageable);
+      }
 
     @Override
-    public Page<BookDTO> sortBooksByNewestArrivals(Pageable pageable) {
-        Page<Book> bookEntity = bookRepository.findAllByOrderByPublicationDateDesc(pageable);
-        return dtoEntityMapper.mapBookEntityToDTO(bookEntity);
-    }
+    public Page<Book> sortBooksByNewestArrivals(Pageable pageable) {
+       return bookRepository.findAllByOrderByPublicationDateDesc(pageable);
+     }
 
 }

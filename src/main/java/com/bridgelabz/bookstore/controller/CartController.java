@@ -34,7 +34,7 @@ public class CartController {
         System.out.println("getting books from cart");
         return iCartService.getBooks(token);
     }
-    @GetMapping("/order-placed/orderid")
+    @GetMapping("/order-placed")
     public ResponseEntity getOrderId(@RequestHeader String token) {
         return new ResponseEntity(iCartService.getOrderId(token), HttpStatus.OK);
     }

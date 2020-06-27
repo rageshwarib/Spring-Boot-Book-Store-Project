@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>, PagingAndSortingRepository<Book, Long> {
-   // Page<Book> findAllBy(Pageable pageable);
+    Page<Book> findAllBy(Pageable pageable);
     Page<Book> findAllByOrderByPriceAsc(Pageable pageable);
     Page<Book> findAllByOrderByPriceDesc(Pageable pageable);
     Page<Book> findAllByOrderByPublicationDateDesc(Pageable pageable);

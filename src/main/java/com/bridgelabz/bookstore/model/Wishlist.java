@@ -10,22 +10,22 @@ public class Wishlist {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int userId;
-    private int bookId;
+    private long userId;
+    private long bookId;
     
     public Wishlist() {
     }
  
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	public int getBookId() {
+	public long getBookId() {
 		return bookId;
 	}
-	public void setBookId(int bookId) {
+	public void setBookId(long bookId) {
 		this.bookId = bookId;
 	}
     

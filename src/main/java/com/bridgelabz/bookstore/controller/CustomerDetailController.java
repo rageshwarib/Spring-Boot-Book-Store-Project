@@ -3,6 +3,7 @@ package com.bridgelabz.bookstore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,13 @@ import com.bridgelabz.bookstore.dto.CustomerDetailsDto;
 import com.bridgelabz.bookstore.service.ICustomerDetailsService;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/customer-details")
 public class CustomerDetailController {
 	 @Autowired
 	    private ICustomerDetailsService iCustomerDetailsService;
 
-	    @PostMapping("/adddetails")
+	    @PostMapping("/add-details")
 	    public ResponseEntity<String> addCustomerDetails(@RequestBody CustomerDetailsDto customerDetailsDto, @RequestHeader String token) {
 	        return new ResponseEntity<String>(iCustomerDetailsService.addCustomerDetails(customerDetailsDto, token), HttpStatus.OK);
 	    }

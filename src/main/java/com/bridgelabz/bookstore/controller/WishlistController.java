@@ -26,18 +26,18 @@ public class WishlistController {
 	    private IWishlistService iWishlistService;
 
 	    @PostMapping("/add-to-wishlist")
-	    public ResponseEntity<String> addToWishlist(@RequestBody WishlistDto wishlistDto) {
-	        return new ResponseEntity<String>(iWishlistService.addToWishlist(wishlistDto), HttpStatus.OK);
+	    public ResponseEntity<String> addToWishlist(@RequestBody WishlistDto wishlistDto, @RequestHeader String token) {
+	        return new ResponseEntity<String>(iWishlistService.addToWishlist(wishlistDto, token), HttpStatus.OK);
 	    }
 
 	    @PostMapping("/remove-from-wishlist")
-	    public ResponseEntity<String> removeFromWishlist(@RequestBody WishlistDto wishlistDto) {
-	        return new ResponseEntity<String>(iWishlistService.removeFromWishlist(wishlistDto), HttpStatus.OK);
+	    public ResponseEntity<String> removeFromWishlist(@RequestBody WishlistDto wishlistDto, @RequestHeader String token) {
+	        return new ResponseEntity<String>(iWishlistService.removeFromWishlist(wishlistDto, token), HttpStatus.OK);
 	    }
 
-	    @GetMapping("/getall/{userId}")
-	    public ResponseEntity<List<Book>> getAllBooksList(@PathVariable int userId) {
-	        return new ResponseEntity<List<Book>>(iWishlistService.getAllBooksList(userId), HttpStatus.OK);
+	    @GetMapping("/get-all")
+	    public ResponseEntity<List<Book>> getAllBooksList(@RequestHeader String token) {
+	        return new ResponseEntity<List<Book>>(iWishlistService.getAllBooksList(token), HttpStatus.OK);
 	    }
 
 }

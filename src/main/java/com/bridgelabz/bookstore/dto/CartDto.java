@@ -1,10 +1,9 @@
 package com.bridgelabz.bookstore.dto;
 
 public class CartDto {
-	//private int userId;
     private long bookId;
     private int bookQuantity;
-   public CartDto() {
+    public CartDto() {
 		// TODO Auto-generated constructor stub
 	}
     public CartDto(long bookId, int bookQuantity) {
@@ -13,12 +12,6 @@ public class CartDto {
         this.bookQuantity = bookQuantity;
     }
     
-//	public int getUserId() {
-//		return userId;
-//	}
-//	public void setUserId(int userId) {
-//		this.userId = userId;
-//	}
 	public long getBookId() {
 		return bookId;
 	}

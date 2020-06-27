@@ -1,28 +1,18 @@
 package com.bridgelabz.bookstore.dto;
 
 public class WishlistDto {
-	 private int userId;
-	 private int bookId;
+	 private long bookId;
 	 public WishlistDto() {
 		// TODO Auto-generated constructor stub
 	}
-	 public WishlistDto(int userId, int bookId) {
-	        this.userId = userId;
+	 public WishlistDto(long bookId) {
 	        this.bookId = bookId;
 	    }
-	public int getUserId() {
-		return userId;
-	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-	public int getBookId() {
+	public long getBookId() {
 		return bookId;
 	}
-	public void setBookId(int bookId) {
+	public void setBookId(long bookId) {
 		this.bookId = bookId;
 	}
 	 
-	 
-
 }
