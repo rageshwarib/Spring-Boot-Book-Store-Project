@@ -3,6 +3,9 @@ package com.bridgelabz.bookstore.service;
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.model.User;
 import com.bridgelabz.bookstore.repository.BookRepository;
+
+import antlr.collections.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -21,6 +24,8 @@ import java.util.stream.IntStream;
 public class AdminBookServiceImpl implements IAdminBookService{
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private IElasticSearch iElasticSearch;
 
     @Override
     public String saveBookData(BufferedReader bufferedReader) {
@@ -34,12 +39,13 @@ public class AdminBookServiceImpl implements IAdminBookService{
                 book.setAuthor(data[1]);
                 book.setTitle(data[2]);
                 book.setImage(data[3]);
-                book.setQuantity(Integer.parseInt(data[4]));
+               // book.setQuantity(Integer.parseInt(data[4]));
                 book.setPrice(Integer.parseInt(data[4]));
-                IntStream.range(7, data.length - 1).forEach(column -> data[6] += "," + data[column]);
+                IntStream.range(6, data.length - 1).forEach(column -> data[5] += "," + data[column]);
                 book.setDescription(data[5]);
                 book.setPublicationDate(LocalDateTime.now());
-                bookRepository.save(book);
+                Book books = bookRepository.save(book);
+                iElasticSearch.createBook(books);
             }
         } catch (IOException e) {
             e.printStackTrace();

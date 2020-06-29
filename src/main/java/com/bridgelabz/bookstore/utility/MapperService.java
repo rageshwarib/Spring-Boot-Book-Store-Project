@@ -14,7 +14,7 @@ import com.bridgelabz.bookstore.model.Cart;
 import com.bridgelabz.bookstore.model.CustomerDetails;
 import com.bridgelabz.bookstore.model.Wishlist;
 @Component
-public class ConverterService {
+public class MapperService {
 
     private ModelMapper modelMapper = new ModelMapper();
 

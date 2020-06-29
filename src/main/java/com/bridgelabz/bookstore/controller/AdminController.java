@@ -12,7 +12,7 @@ import java.io.*;
 
 @RestController
 @RequestMapping("/book-store/admin")
-@PreAuthorize("hasRole('ADMIN')")
+// @PreAuthorize("hasRole('ADMIN')")
 public class AdminController extends CustomerBookController {
     @Autowired
     IAdminBookService adminBookService;

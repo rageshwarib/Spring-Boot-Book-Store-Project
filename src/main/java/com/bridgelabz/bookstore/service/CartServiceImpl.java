@@ -22,14 +22,14 @@ import com.bridgelabz.bookstore.repository.CartRepository;
 import com.bridgelabz.bookstore.repository.OrderIdRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.security.jwt.JwtUtils;
-import com.bridgelabz.bookstore.utility.ConverterService;
+import com.bridgelabz.bookstore.utility.MapperService;
 import com.bridgelabz.bookstore.utility.RabbitMq;
 @Service
 @Transactional
 public class CartServiceImpl implements ICartService{
 	private static final long order_Id = 1000;
 	@Autowired
-    private ConverterService converterService;
+    private MapperService converterService;
 	@Autowired
     private CartRepository cartRepository;
 	@Autowired

@@ -7,7 +7,7 @@ import com.bridgelabz.bookstore.dto.CustomerDetailsDto;
 import com.bridgelabz.bookstore.model.CustomerDetails;
 import com.bridgelabz.bookstore.repository.CustomerDetailsRepository;
 import com.bridgelabz.bookstore.security.jwt.JwtUtils;
-import com.bridgelabz.bookstore.utility.ConverterService;
+import com.bridgelabz.bookstore.utility.MapperService;
 
 @Service
 public class CustomerDetailsImpl implements ICustomerDetailsService {
@@ -16,7 +16,7 @@ public class CustomerDetailsImpl implements ICustomerDetailsService {
 	    private CustomerDetailsRepository customerDetailsRepository;
 
 	    @Autowired
-	    private ConverterService converterService;
+	    private MapperService converterService;
 
 	    @Autowired
 	    private JwtUtils jwtUtils;

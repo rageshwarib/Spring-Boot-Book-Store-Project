@@ -48,9 +48,9 @@ public class AuthServiceImpl implements IAuthService {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    RabbitMq rabbitmq;
+    RabbitMq rabbitMq;
     @Autowired
-    private EmailDto rabbitMqDto;
+    private EmailDto emailDto;
     @Autowired
     RabbitTemplate template;
     @Autowired
@@ -72,12 +72,6 @@ public class AuthServiceImpl implements IAuthService {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
-//        if (userRepository.existsByMo(signUpRequest.getUsername())) {
-//            return ResponseEntity
-//                    .badRequest()
-//                    .body(new MessageResponse("Error: Username is already taken!"));
-//        }
-
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
@@ -86,13 +80,8 @@ public class AuthServiceImpl implements IAuthService {
         String strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
-//            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//                    .orElseThrow(() ->
             throw new RuntimeException("Error: Role is not found.");
-//            );
-//            roles.add(userRole);
         } else {
-            //strRoles.forEach(role -> {
                 switch (strRoles) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
@@ -105,16 +94,15 @@ public class AuthServiceImpl implements IAuthService {
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
-           // });
         }
         user.setRoles(roles);
         userRepository.save(user);
         
-        rabbitMqDto.setTo(user.getEmail());
-        rabbitMqDto.setFrom("ragu.bodke@gmail.com");
-        rabbitMqDto.setSubject("Welcome to Book Store");
-        rabbitMqDto.setBody("Click this link to verify your account " +user.getId());
-        rabbitmq.sendingMsgToQueue(rabbitMqDto);
+        emailDto.setTo(user.getEmail());
+        emailDto.setFrom("ragu.bodke@gmail.com");
+        emailDto.setSubject("Welcome to Book Store");
+        emailDto.setBody("Click this link to verify your account " +user.getId());
+        rabbitMq.sendingMsgToQueue(emailDto);
      //   sendEmailNotification(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
@@ -147,60 +135,33 @@ public class AuthServiceImpl implements IAuthService {
         return "Congratulations!! Your account is verified.";
     }
 
-   // public void sendEmailNotification(User user) throws MailException {
-        
-   // }
     @Override
     public String forgotPassword(String email) {
-
     	User user = userRepository.findByEmail(email);   // find by user email id
     	if (user == null) {								// if user email id it null response to user not register it
     		throw new  RuntimeException("User not existing");
     	}else {
-
     		String token = jwtUtils.getJwtTokenFromUserId(user.getId());
-    		EmailDto emailDto = RabbitMq.getRabbitMq(email, token);
-    		template.convertAndSend("userMessageQueue", rabbitMqDto);
-    		javaMailSender.send(rabbitmq.verifyUserMail(email, token, "Your Id is " + user.getId())); // send email
+    		// Sending mail to reset password
+    		sendEmailToResetPassword(email, token);
     		return "User Email found" + token ;
     		}	
     	}
-
+    private void sendEmailToResetPassword(String email, String token) {
+        emailDto.setTo(email);
+        emailDto.setFrom("ragu.bodke@gmail.com");
+        emailDto.setSubject("Hello");
+        emailDto.setBody("Please click this link to verify your account " + "http://localhost:4200/resetpassword " + token);
+        rabbitMq.sendingMsgToQueue(emailDto);
+    }
 
     @Override
     public String setPassword(SetPasswordDto setpassworddto, String token) {
     	long userId = jwtUtils.getUserIdFromToken(token);
-    	Optional<User> user = userRepository.findById(userId); // find user email present or not
+    	Optional<User> user = userRepository.findById(userId); 
     	user.get().setPassword(encoder.encode(setpassworddto.getConfirmPassword()));
     	userRepository.save(user.get());
     	return "Password changed";
     }
-
-
-//    public String updateuserByEmail(User user, String email) {
-//    	User updatedUser = userRepository.findByEmail(email);
-//    	updatedUser = user;
-//    	userRepository.save(updatedUser);
-//    	return "User updated sucessfully";
-//    }
-//    @Override
-//    public Response validateUser(String token) {
-//
-//    	String userName = jwtUtils.getUserNameFromJwtToken(token); // get username from user token.
-//    	if (userName == null) {
-//    		throw new RuntimeException("Invalid Token");
-//    	}
-//    	User user = userRepository.findByUsername(userName).get(); // check username present or not
-//    	if (user != null) { // if userid is found validate should be true
-//    		user.setVerified(true);
-//    		userRepository.save(user);
-//    		return new Response(200, "Email Verified", true);
-//    	} else {
-//    		return new Response(400, "Email not verified", false);
-//
-//    	}
-//
-//    }
     
-
 }

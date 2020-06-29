@@ -4,10 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 public class Book implements Serializable{
     @Id
     private long id;
@@ -18,7 +23,7 @@ public class Book implements Serializable{
     private String description;
     private int price;
     private LocalDateTime publicationDate;
-    private int quantity;
+   
 
     public long getId() {
         return id;
@@ -76,12 +81,12 @@ public class Book implements Serializable{
         this.publicationDate = publicationDate;
     }
 
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+//	public int getQuantity() {
+//		return quantity;
+//	}
+//
+//	public void setQuantity(int quantity) {
+//		this.quantity = quantity;
+//	}
     
 }

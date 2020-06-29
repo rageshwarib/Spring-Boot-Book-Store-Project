@@ -18,13 +18,13 @@ import com.bridgelabz.bookstore.repository.BookRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.repository.WishlistRepository;
 import com.bridgelabz.bookstore.security.jwt.JwtUtils;
-import com.bridgelabz.bookstore.utility.ConverterService;
+import com.bridgelabz.bookstore.utility.MapperService;
 
 @Service
 @Transactional
 public class WishlistServiceImpl implements IWishlistService {
 	 @Autowired
-	    private ConverterService converterService;
+	    private MapperService converterService;
 	 	@Autowired
 	    private WishlistRepository wishlistRepository;
 	    @Autowired
