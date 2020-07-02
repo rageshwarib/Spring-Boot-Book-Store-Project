@@ -22,10 +22,11 @@ public class Book implements Serializable{
     @Column(length = 2000)
     private String description;
     private int price;
-    private LocalDateTime publicationDate;
-   
+   public Book() {
+	// TODO Auto-generated constructor stub
+   }
 
-    public long getId() {
+	public long getId() {
         return id;
     }
 
@@ -73,20 +74,4 @@ public class Book implements Serializable{
         this.price = price;
     }
 
-    public LocalDateTime getPublicationDate() {
-        return publicationDate;
-    }
-
-    public void setPublicationDate(LocalDateTime publicationDate) {
-        this.publicationDate = publicationDate;
-    }
-
-//	public int getQuantity() {
-//		return quantity;
-//	}
-//
-//	public void setQuantity(int quantity) {
-//		this.quantity = quantity;
-//	}
-    
 }

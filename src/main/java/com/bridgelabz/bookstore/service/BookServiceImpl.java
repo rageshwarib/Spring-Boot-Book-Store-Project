@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 public class BookServiceImpl implements IBookService {
     @Autowired
     private BookRepository bookRepository;
+    @Autowired 
+    private IElasticSearchService iElasticSearchService;
    
 
     @Override
@@ -26,18 +30,11 @@ public class BookServiceImpl implements IBookService {
 //    public List<Book> getAllBooks() {
 //        return bookRepository.findAll();
 //    }
-
     @Override
-   // @Cacheable(value= "searchBooks", key= "#book")
-    public List<Book> searchBooks(String searchKey) {
-       List<Book> bookList = new ArrayList<>();
-       for (Book book : bookRepository.findAll()) {
-           if (book.getAuthor().toLowerCase().contains(searchKey.toLowerCase())
-                   || book.getTitle().toLowerCase().contains(searchKey.toLowerCase())) {
-               bookList.add(book);
-           }
-       }
-       return bookList;
+    public List<Book> searchBooks(String searchText) throws IOException {
+        List<Book> searchList = new ArrayList<>();
+        searchList = iElasticSearchService.searchBook(searchText);
+        return searchList;
     }
 
     @Override
@@ -50,9 +47,9 @@ public class BookServiceImpl implements IBookService {
         return bookRepository.findAllByOrderByPriceDesc(pageable);
       }
 
-    @Override
-    public Page<Book> sortBooksByNewestArrivals(Pageable pageable) {
-       return bookRepository.findAllByOrderByPublicationDateDesc(pageable);
-     }
+//    @Override
+//    public Page<Book> sortBooksByNewestArrivals(Pageable pageable) {
+//       return bookRepository.findAllByOrderByPublicationDateDesc(pageable);
+//     }
 
 }

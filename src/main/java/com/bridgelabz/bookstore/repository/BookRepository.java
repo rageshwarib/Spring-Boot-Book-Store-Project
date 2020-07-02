@@ -15,7 +15,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, PagingAndSort
     Page<Book> findAllBy(Pageable pageable);
     Page<Book> findAllByOrderByPriceAsc(Pageable pageable);
     Page<Book> findAllByOrderByPriceDesc(Pageable pageable);
-    Page<Book> findAllByOrderByPublicationDateDesc(Pageable pageable);
+   /// Page<Book> findAllByOrderByPublicationDateDesc(Pageable pageable);
     Book findById(long bookId);
     
 

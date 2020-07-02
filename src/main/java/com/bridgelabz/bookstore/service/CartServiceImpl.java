@@ -47,26 +47,26 @@ public class CartServiceImpl implements ICartService{
 
 
     @Override
-    public String addToCart(CartDto cartDto, String token) {
+    public void addToCart(CartDto cartDto, String token) {
     	if (jwtUtils.validateJwtToken(token)) {
     		Cart cart = converterService.convertToCartEntity(cartDto);
     		Long userId = jwtUtils.getUserIdFromJwtToken(token);
     		cart.setUserId(userId);
     		userRepository.findById(userId);
     		cartRepository.save(cart);
-    		return "Added to cart successfully";
+    		//return "Added to cart successfully";
     	} else
     		throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
     }
 
     @Override
-    public String removeFromCart(CartDto cartDto, String token) {
+    public void removeFromCart(CartDto cartDto, String token) {
     	 if (jwtUtils.validateJwtToken(token)) {
     		 Cart cart = converterService.convertToCartEntity(cartDto);
     		 long userId = jwtUtils.getUserIdFromJwtToken(token);
     		 cart.setUserId(userId);
     		 cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), userId);
-    		 return "Book Removed from cart Successfully";
+    		// return "Book Removed from cart Successfully";
     	 } else
     		 throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
     }

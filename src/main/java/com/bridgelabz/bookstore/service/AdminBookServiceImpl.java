@@ -25,7 +25,7 @@ public class AdminBookServiceImpl implements IAdminBookService{
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private IElasticSearch iElasticSearch;
+    private IElasticSearchService elasticSearchService;
 
     @Override
     public String saveBookData(BufferedReader bufferedReader) {
@@ -38,14 +38,11 @@ public class AdminBookServiceImpl implements IAdminBookService{
                 book.setId(Long.parseLong(data[0]));
                 book.setAuthor(data[1]);
                 book.setTitle(data[2]);
-                book.setImage(data[3]);
-               // book.setQuantity(Integer.parseInt(data[4]));
                 book.setPrice(Integer.parseInt(data[4]));
                 IntStream.range(6, data.length - 1).forEach(column -> data[5] += "," + data[column]);
                 book.setDescription(data[5]);
-                book.setPublicationDate(LocalDateTime.now());
-                Book books = bookRepository.save(book);
-                iElasticSearch.createBook(books);
+                bookRepository.save(book);
+                elasticSearchService.createBook(book);
             }
         } catch (IOException e) {
             e.printStackTrace();

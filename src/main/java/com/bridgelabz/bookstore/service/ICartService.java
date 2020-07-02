@@ -7,8 +7,8 @@ import com.bridgelabz.bookstore.dto.CartDto;
 
 
 public interface ICartService {
-	 String addToCart(CartDto cartDto, String token);
-	 String removeFromCart(CartDto cartDto, String token);
+	 void addToCart(CartDto cartDto, String token);
+	 void removeFromCart(CartDto cartDto, String token);
 	 List<BookCartDto> getBooks(String token);
 	 Long getOrderId(String token);
 }

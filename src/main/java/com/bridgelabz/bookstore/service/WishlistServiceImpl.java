@@ -35,26 +35,26 @@ public class WishlistServiceImpl implements IWishlistService {
 	    private UserRepository userRepository;
 
 	    @Override
-	    public String addToWishlist(WishlistDto wishlistDto, String token) {
+	    public void addToWishlist(WishlistDto wishlistDto, String token) {
 	    	if (jwtUtils.validateJwtToken(token)) {
 	        Wishlist wishlist = converterService.convertToWishlistEntity(wishlistDto);
 	        Long userId = jwtUtils.getUserIdFromJwtToken(token);
 	        wishlist.setUserId(userId);
 	        userRepository.findById(userId);
 	        wishlistRepository.save(wishlist);
-	        return "Added to Wishlist successfully";
+	       // return "Added to Wishlist successfully";
 	    } else
 	    	throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
 	    }
 
 	    @Override
-	    public String removeFromWishlist(WishlistDto wishlistDto, String token) {
+	    public void removeFromWishlist(WishlistDto wishlistDto, String token) {
 	    	if (jwtUtils.validateJwtToken(token)) {
 	    		 Wishlist wishlist = converterService.convertToWishlistEntity(wishlistDto);
 	    		 long userId = jwtUtils.getUserIdFromJwtToken(token);
 	    		 wishlist.setUserId(userId);
 	    		 wishlistRepository.deleteWishlistByBookIdAndUserId(wishlist.getBookId(), userId);
-	    		 return "Book Removed from wishlist Successfully";
+	    		// return "Book Removed from wishlist Successfully";
 	    	 } else
 	    		 throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
 	    }

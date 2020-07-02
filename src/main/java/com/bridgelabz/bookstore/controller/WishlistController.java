@@ -26,13 +26,13 @@ public class WishlistController {
 	    private IWishlistService iWishlistService;
 
 	    @PostMapping("/add-to-wishlist")
-	    public ResponseEntity<String> addToWishlist(@RequestBody WishlistDto wishlistDto, @RequestHeader String token) {
-	        return new ResponseEntity<String>(iWishlistService.addToWishlist(wishlistDto, token), HttpStatus.OK);
+	    public void addToWishlist(@RequestBody WishlistDto wishlistDto, @RequestHeader String token) {
+	        iWishlistService.addToWishlist(wishlistDto, token);
 	    }
 
 	    @PostMapping("/remove-from-wishlist")
-	    public ResponseEntity<String> removeFromWishlist(@RequestBody WishlistDto wishlistDto, @RequestHeader String token) {
-	        return new ResponseEntity<String>(iWishlistService.removeFromWishlist(wishlistDto, token), HttpStatus.OK);
+	    public void removeFromWishlist(@RequestBody WishlistDto wishlistDto, @RequestHeader String token) {
+	        iWishlistService.removeFromWishlist(wishlistDto, token);
 	    }
 
 	    @GetMapping("/get-all")

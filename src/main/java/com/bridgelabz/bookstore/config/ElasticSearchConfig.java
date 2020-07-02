@@ -20,7 +20,7 @@ public class ElasticSearchConfig {
     public RestHighLevelClient client() {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(new HttpHost("localhost", 9200, "http")));
-        // client..getParams().setConnectionTimeout(5000);
+        // client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
         // client.getHttpConnectionManager().getParams().setSoTimeout(5000);
         return client;
     }

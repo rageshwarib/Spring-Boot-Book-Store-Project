@@ -21,13 +21,13 @@ public class CartController {
     private ICartService iCartService;
 
     @PostMapping("/add-to-cart")
-    public ResponseEntity<String> addToCart(@RequestBody CartDto cartDto, @RequestHeader String token) {
-        return new ResponseEntity<String>(iCartService.addToCart(cartDto,token), HttpStatus.OK);
+    public void addToCart(@RequestBody CartDto cartDto, @RequestHeader String token) {
+         iCartService.addToCart(cartDto,token);
     }
 
     @PostMapping("/remove-from-cart")
-    public ResponseEntity<String> removeFromCart(@RequestBody CartDto cartDto, @RequestHeader String token) {
-        return new ResponseEntity<String>(iCartService.removeFromCart(cartDto, token), HttpStatus.OK);
+    public void removeFromCart(@RequestBody CartDto cartDto, @RequestHeader String token) {
+        iCartService.removeFromCart(cartDto, token);
     }
     @GetMapping("/getall")
     public List<BookCartDto> getall(@RequestHeader String token) {
