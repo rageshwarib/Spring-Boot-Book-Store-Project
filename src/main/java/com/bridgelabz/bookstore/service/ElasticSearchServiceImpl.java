@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -11,6 +12,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -76,12 +78,18 @@ public class ElasticSearchServiceImpl implements IElasticSearchService {
 	        }
 	    @Override
 	    public String deleteBook(long id) throws IOException {
-
-	        DeleteRequest deleteRequest = new DeleteRequest(INDEX, TYPE, String.valueOf(id));
-
-	        DeleteResponse response = client.delete(deleteRequest,RequestOptions.DEFAULT);
-
-	        return response.getResult().name();
+	    	DeleteRequest deleteRequest = new DeleteRequest(INDEX, TYPE, String.valueOf(id));
+	    	DeleteResponse response = client.delete(deleteRequest,RequestOptions.DEFAULT);
+	    	return response.getResult().name();
 	    }
+
+		@Override
+		public Book updateBook(long id, Book book) throws IOException {
+			Map<String, Object> bookMap = objectMapper.convertValue(book, Map.class);
+			UpdateRequest updateRequest = new UpdateRequest(INDEX, TYPE, String.valueOf(id));
+			updateRequest.doc(bookMap);
+			client.update(updateRequest, RequestOptions.DEFAULT);
+			return book;
+		}
 
 }

@@ -12,5 +12,5 @@ public interface IElasticSearchService {
 	public String createBook(Book book) throws IOException; 
 	public List<Book> searchBook(String search) throws IOException;
 	public String deleteBook(long id)throws IOException;
-	
+	public Book updateBook(long id, Book book)throws IOException;
 }

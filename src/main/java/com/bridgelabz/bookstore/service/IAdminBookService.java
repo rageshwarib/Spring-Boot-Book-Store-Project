@@ -8,5 +8,5 @@ public interface IAdminBookService {
     String saveBookData(BufferedReader bufferedReader);
     String addBook(Book book) throws IOException;
     String deleteBook(long id) throws IOException ;
-    String updateBook(Book book);
+	String updateBook(long id, Book book) throws IOException;
 }

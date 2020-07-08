@@ -64,26 +64,17 @@ public class AdminBookServiceImpl implements IAdminBookService{
     }
 
     @Override
-    public String updateBook(Book book) {
-        Optional<Book> book1 = Optional.ofNullable(bookRepository.findById(book.getId()));
-        if (book1.isPresent()) {
-            final BeanWrapper src = new BeanWrapperImpl(book);
-            PropertyDescriptor[] pds = src.getPropertyDescriptors();
-            Set<String> emptyNames = new HashSet<>();
-            for (PropertyDescriptor pd : pds) {
-                Object srcValue = src.getPropertyValue(pd.getName());
-                if (srcValue == null) {
-                    emptyNames.add(pd.getName());
-                }
-            }
-            String [] result = new String[emptyNames.size()];
-            String [] nullProperties = emptyNames.toArray(result);
-            BeanUtils.copyProperties(src, book1.get(), nullProperties);
-            bookRepository.save(book1.get());
-            return "Book details updated successfully";
-        }
-        return "Book not found";
-    }
+    public String updateBook(long id, Book book) throws IOException {
+    	Optional<Book> bookFind = Optional.ofNullable(bookRepository.findById(id));
+    	if (bookFind.isPresent()) {
+    		book.setId(id);
+    	Book updatedBook = bookRepository.save(book);
+    	elasticSearchService.updateBook(id, book);
+    	return "Book updated successfully";
+    	}else {
+    		return "Book not found";
+    	}
+   }
 
     @Override
     public String deleteBook(long id) throws IOException {

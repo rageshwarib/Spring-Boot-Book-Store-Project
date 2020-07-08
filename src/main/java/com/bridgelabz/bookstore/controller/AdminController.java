@@ -14,7 +14,7 @@ import java.io.*;
 @RestController
 @RequestMapping("/book-store/admin")
 // @PreAuthorize("hasRole('ADMIN')")
-@Profile("prod")
+// @Profile("prod")
 public class AdminController extends CustomerBookController {
     @Autowired
     IAdminBookService adminBookService;
@@ -41,9 +41,9 @@ public class AdminController extends CustomerBookController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateBook(@RequestBody Book book) {
-        return new ResponseEntity<>(adminBookService.updateBook(book), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateBook(@PathVariable(value = "id") long id, @RequestBody Book book) throws IOException {
+        return new ResponseEntity<>(adminBookService.updateBook(id, book), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
