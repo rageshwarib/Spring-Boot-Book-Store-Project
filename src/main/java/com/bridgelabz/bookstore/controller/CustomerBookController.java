@@ -5,6 +5,7 @@ import com.bridgelabz.bookstore.service.IBookService;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 @RequestMapping("/book-store")
-
+@Profile("dev")
 public class CustomerBookController {
     @Autowired
     IBookService bookService;

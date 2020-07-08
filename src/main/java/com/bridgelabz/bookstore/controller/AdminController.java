@@ -3,6 +3,7 @@ package com.bridgelabz.bookstore.controller;
 import com.bridgelabz.bookstore.model.Book;
 import com.bridgelabz.bookstore.service.IAdminBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import java.io.*;
 @RestController
 @RequestMapping("/book-store/admin")
 // @PreAuthorize("hasRole('ADMIN')")
+@Profile("prod")
 public class AdminController extends CustomerBookController {
     @Autowired
     IAdminBookService adminBookService;
