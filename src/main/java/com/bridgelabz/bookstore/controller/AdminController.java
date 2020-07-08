@@ -24,7 +24,7 @@ public class AdminController extends CustomerBookController {
     }
 
     @PostMapping("/add-book")
-    public ResponseEntity<String> addBook(@RequestBody Book book) {
+    public ResponseEntity<String> addBook(@RequestBody Book book) throws IOException {
         return new ResponseEntity<>(adminBookService.addBook(book), HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class AdminController extends CustomerBookController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable long id, @RequestHeader String token ) {
+    public ResponseEntity<String> deleteBook(@PathVariable long id) throws IOException  {
         return new ResponseEntity<>(adminBookService.deleteBook(id), HttpStatus.OK);
     }
 }

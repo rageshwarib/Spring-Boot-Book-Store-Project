@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -14,12 +16,14 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.seqno.RetentionLeaseActions.AddRequest;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.bookstore.model.Book;
+import com.bridgelabz.bookstore.repository.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class ElasticSearchServiceImpl implements IElasticSearchService {
@@ -31,6 +35,8 @@ public class ElasticSearchServiceImpl implements IElasticSearchService {
 
 	    @Autowired
 	    private ObjectMapper objectMapper;
+	    @Autowired
+	    private BookRepository bookRepository;
 	    
 	    @Override
 	    public String createBook(Book book) throws IOException {
@@ -68,4 +74,14 @@ public class ElasticSearchServiceImpl implements IElasticSearchService {
 	            }
 	            return books;
 	        }
+	    @Override
+	    public String deleteBook(long id) throws IOException {
+
+	        DeleteRequest deleteRequest = new DeleteRequest(INDEX, TYPE, String.valueOf(id));
+
+	        DeleteResponse response = client.delete(deleteRequest,RequestOptions.DEFAULT);
+
+	        return response.getResult().name();
+	    }
+
 }

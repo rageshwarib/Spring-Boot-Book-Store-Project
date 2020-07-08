@@ -38,6 +38,7 @@ public class AdminBookServiceImpl implements IAdminBookService{
                 book.setId(Long.parseLong(data[0]));
                 book.setAuthor(data[1]);
                 book.setTitle(data[2]);
+                book.setImage(data[3]);
                 book.setPrice(Integer.parseInt(data[4]));
                 IntStream.range(6, data.length - 1).forEach(column -> data[5] += "," + data[column]);
                 book.setDescription(data[5]);
@@ -52,8 +53,14 @@ public class AdminBookServiceImpl implements IAdminBookService{
 
     @Override
     public String addBook(Book book) {
-        bookRepository.save(book);
-        return "Book added successfully";
+    	try {
+		    bookRepository.save(book);
+		    elasticSearchService.createBook(book);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    	return "Book added successfully";
     }
 
     @Override
@@ -79,8 +86,9 @@ public class AdminBookServiceImpl implements IAdminBookService{
     }
 
     @Override
-    public String deleteBook(long id) {
+    public String deleteBook(long id) throws IOException {
         bookRepository.deleteById(id);
+        elasticSearchService.deleteBook(id);
         return "Book deleted successfully";
     }
 

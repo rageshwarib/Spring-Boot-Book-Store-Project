@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.bookstore.model.Wishlist;
-
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
 
