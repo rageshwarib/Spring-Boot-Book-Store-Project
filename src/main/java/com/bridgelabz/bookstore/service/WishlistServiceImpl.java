@@ -42,7 +42,6 @@ public class WishlistServiceImpl implements IWishlistService {
 	        wishlist.setUserId(userId);
 	        userRepository.findById(userId);
 	        wishlistRepository.save(wishlist);
-	       // return "Added to Wishlist successfully";
 	    } else
 	    	throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
 	    }
@@ -54,22 +53,9 @@ public class WishlistServiceImpl implements IWishlistService {
 	    		 long userId = jwtUtils.getUserIdFromJwtToken(token);
 	    		 wishlist.setUserId(userId);
 	    		 wishlistRepository.deleteWishlistByBookIdAndUserId(wishlist.getBookId(), userId);
-	    		// return "Book Removed from wishlist Successfully";
 	    	 } else
 	    		 throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
 	    }
-//	    @Override
-//	    public String removeFromCart(CartDto cartDto, String token) {
-//	    	 if (jwtUtils.validateJwtToken(token)) {
-//	    		 Cart cart = converterService.convertToCartEntity(cartDto);
-//	    		 long userId = jwtUtils.getUserIdFromJwtToken(token);
-//	    		 cart.setUserId(userId);
-//	    		 cartRepository.deleteCartByBookIdAndUserId(cart.getBookId(), userId);
-//	    		 return "Book Removed from cart Successfully";
-//	    	 } else
-//	    		 throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
-//	    }
-
 
 	    @Override
 	    public List<Book> getAllBooksList(String token) {

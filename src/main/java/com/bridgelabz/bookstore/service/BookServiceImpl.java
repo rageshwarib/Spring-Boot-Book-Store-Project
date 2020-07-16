@@ -1,7 +1,6 @@
 package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.model.Book;
-import com.bridgelabz.bookstore.modelmapper.DTOEntityMapper;
 import com.bridgelabz.bookstore.repository.BookRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +45,5 @@ public class BookServiceImpl implements IBookService {
     public Page<Book> sortBooksByPriceDesc(Pageable pageable) {
         return bookRepository.findAllByOrderByPriceDesc(pageable);
       }
-
-//    @Override
-//    public Page<Book> sortBooksByNewestArrivals(Pageable pageable) {
-//       return bookRepository.findAllByOrderByPublicationDateDesc(pageable);
-//     }
 
 }

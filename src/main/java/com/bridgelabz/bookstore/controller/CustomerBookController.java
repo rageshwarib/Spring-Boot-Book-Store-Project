@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-//@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+// @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 @RequestMapping("/book-store")
-@Profile("dev")
+// @Profile("dev")
 public class CustomerBookController {
     @Autowired
     IBookService bookService;

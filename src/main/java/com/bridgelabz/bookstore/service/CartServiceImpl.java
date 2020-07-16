@@ -54,7 +54,6 @@ public class CartServiceImpl implements ICartService{
     		cart.setUserId(userId);
     		userRepository.findById(userId);
     		cartRepository.save(cart);
-    		//return "Added to cart successfully";
     	} else
     		throw new UserException(UserException.ExceptionType.JWT_NOT_VALID, "Token is not valid");
     }
@@ -100,21 +99,6 @@ public class CartServiceImpl implements ICartService{
     public Long getOrderId(String token) {
      if (jwtUtils.validateJwtToken(token)) {
     	Long userId = jwtUtils.getUserIdFromJwtToken(token);
-		// List<BookCartDto> cartBooks = getBooks(token);
-		// for (BookCartDto bookCartQty : cartBooks) {
-		// long id = bookCartQty.getId();
-		// int userBookQuantity = bookCartQty.getBookQuantity();
-		// int storeQuantity = bookRepository.findById(id).getQuantity();
-		// if (userBookQuantity <= storeQuantity) {
-		// bookRepository.findById(id).setQuantity(storeQuantity - userBookQuantity);
-		// }
-		// else {
-		// throw new UserException(UserException.ExceptionType.QUANTITY_EXCEEDED, "Book quantity in incremented");
-		// }
-		// }
-		// for (BookCartDto books : cartBooks) {
-		// cartRepository.deleteCartByBookIdAndUserId(books.getId(), userId);               
-		// }
 		Optional<User> byId = userRepository.findById(userId);
 		String email = byId.get().getEmail();
 		OrderId orderIdNew = new OrderId();
@@ -138,7 +122,7 @@ public class CartServiceImpl implements ICartService{
     
     private void sendEmailWithOrderDetails(String email, long orderId) {
         emailDto.setTo(email);
-        emailDto.setFrom("ragu.bodke@gmail.com");
+        emailDto.setFrom("${EMAIL}");
         emailDto.setSubject("Your Order is Placed");
         emailDto.setBody("Thank you for placing order with us, your order id is " + orderId);
         rabbitMq.sendingMsgToQueue(emailDto);

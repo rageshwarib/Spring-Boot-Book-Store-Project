@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 "API for online book store",
                 "1.0",
                 "Free to use",
-                new Contact("Rageshwari", "http://bridgelabz.com", "ragu.bodke@gmail.com"),
+                new Contact("Rageshwari", "http://bridgelabz.com", "${EMAIL}"),
                 "API License",
                 "http://bridgelabz.com",
                 Collections.emptyList()

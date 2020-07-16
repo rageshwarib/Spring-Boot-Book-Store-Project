@@ -99,7 +99,7 @@ public class AuthServiceImpl implements IAuthService {
         userRepository.save(user);
         
         emailDto.setTo(user.getEmail());
-        emailDto.setFrom("ragu.bodke@gmail.com");
+        emailDto.setFrom("${EMAIL}");
         emailDto.setSubject("Welcome to Book Store");
         emailDto.setBody("Click this link to verify your account " +user.getId());
         rabbitMq.sendingMsgToQueue(emailDto);
@@ -149,7 +149,7 @@ public class AuthServiceImpl implements IAuthService {
     	}
     private void sendEmailToResetPassword(String email, String token) {
         emailDto.setTo(email);
-        emailDto.setFrom("ragu.bodke@gmail.com");
+        emailDto.setFrom("${EMAIL}");
         emailDto.setSubject("Hello");
         emailDto.setBody("Please click this link to verify your account " + "http://localhost:4200/resetpassword " + token);
         rabbitMq.sendingMsgToQueue(emailDto);

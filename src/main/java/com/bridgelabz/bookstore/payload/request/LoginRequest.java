@@ -8,12 +8,8 @@ public class LoginRequest {
 
     @NotBlank
     private String password;
-//    public LoginRequest(@NotBlank String username, @NotBlank String password) {
-//        this.username = username;
-//        this.password = password;
-//    }
 
-  public String getUsername() {
+    public String getUsername() {
         return username;
     }
 
